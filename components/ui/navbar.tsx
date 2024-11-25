@@ -35,11 +35,6 @@ export default function MinimalNavBar() {
             Projects
           </RouterLink>
         </NavbarItem>
-        <NavbarItem>
-          <RouterLink href="/contact" className="font-satoshi">
-            Contact
-          </RouterLink>
-        </NavbarItem>
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
@@ -56,11 +51,6 @@ export default function MinimalNavBar() {
         <NavbarMenuItem>
           <RouterLink href="/projects" className="font-satoshi">
             Projects
-          </RouterLink>
-        </NavbarMenuItem>
-        <NavbarMenuItem>
-          <RouterLink href="/contact" className="font-satoshi">
-            Contact
           </RouterLink>
         </NavbarMenuItem>
       </NavbarMenu>

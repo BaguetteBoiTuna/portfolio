@@ -11,6 +11,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { TextReveal } from "./text-reveal";
 
 function FunnyButton() {
   return (
@@ -22,8 +23,13 @@ function FunnyButton() {
         <AlertDialogHeader>
           <AlertDialogTitle>why did you click me :(</AlertDialogTitle>
           <AlertDialogDescription>
-            you had no reason to click me, but here we are. i&apos;m just a
-            button.
+            <div>
+              <TextReveal
+                text="Why did you even click this?"
+                revealText="This button is just here for symmetry ¯\_(ツ)_/¯"
+                className="mt-4"
+              />
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
