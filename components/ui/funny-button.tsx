@@ -6,7 +6,7 @@ import {
   AlertDialogHeader,
   AlertDialogFooter,
   AlertDialogTitle,
-  AlertDialogDescription,
+  //AlertDialogDescription,
   AlertDialogTrigger,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
@@ -22,15 +22,13 @@ function FunnyButton() {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>why did you click me :(</AlertDialogTitle>
-          <AlertDialogDescription>
-            <div>
-              <TextReveal
-                text="Why did you even click this?"
-                revealText="This button is just here for symmetry ¯\_(ツ)_/¯"
-                className="mt-4"
-              />
-            </div>
-          </AlertDialogDescription>
+          <div>
+            <TextReveal
+              text="Why did you even click this?"
+              revealText="This button is just here for symmetry ¯\_(ツ)_/¯"
+              className="mt-4"
+            />
+          </div>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogAction>ok :(</AlertDialogAction>
