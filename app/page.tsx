@@ -77,7 +77,7 @@ export default function Home() {
             </MotionDiv>
           </div>
           <MotionDiv
-            className="flex sm:order-last order-first w-fluid-lg h-fluid-lg overflow-hidden"
+            className="flex z-10 sm:order-last order-first w-fluid-lg h-fluid-lg overflow-hidden"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
