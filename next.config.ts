@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "api.microlink.io",
+      },
+      {
+        protocol: "https",
         hostname: "github.com",
       },
       {

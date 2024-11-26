@@ -31,6 +31,11 @@ export default function MinimalNavBar() {
           </RouterLink>
         </NavbarItem>
         <NavbarItem>
+          <RouterLink href="/tools" className="font-satoshi">
+            Tools
+          </RouterLink>
+        </NavbarItem>
+        <NavbarItem>
           <RouterLink href="/projects" className="font-satoshi">
             Projects
           </RouterLink>
@@ -46,6 +51,11 @@ export default function MinimalNavBar() {
         <NavbarMenuItem>
           <RouterLink href="/about" className="font-satoshi">
             About
+          </RouterLink>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <RouterLink href="/about" className="font-satoshi">
+            Tools
           </RouterLink>
         </NavbarMenuItem>
         <NavbarMenuItem>

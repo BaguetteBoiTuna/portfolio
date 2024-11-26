@@ -1,4 +1,6 @@
 import { FlipWords } from "@/components/ui/flip-words";
+import { ShootingStars } from "@/components/ui/shooting-stars";
+import { StarsBackground } from "@/components/ui/stars-background";
 import { Button } from "@/components/ui/button";
 import { Github, Twitter } from "lucide-react";
 import Navbar from "@/components/ui/navbar";
@@ -91,6 +93,8 @@ export default function Home() {
           </MotionDiv>
         </div>
       </div>
+      <ShootingStars />
+      <StarsBackground />
     </div>
   );
 }
