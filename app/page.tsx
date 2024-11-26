@@ -4,6 +4,7 @@ import { Github, Twitter } from "lucide-react";
 import Navbar from "@/components/ui/navbar";
 import Image from "next/image";
 import FunnyButton from "@/components/ui/funny-button";
+import MotionDiv from "@/components/ui/motion-div";
 
 export default function Home() {
   const names = ["Dante", "TunaSub", "BaguetteBoiTuna"];
@@ -14,17 +15,40 @@ export default function Home() {
   return (
     <div className="flex w-full h-screen flex-col">
       <Navbar />
-      <div className="flex flex-col mx-auto w-full sm:max-w-[80%] h-full items-center justify-center">
-        <div className="flex flex-col w-full sm:flex-row items-center justify-evenly">
+      <div className="flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
+        <div className="flex flex-col w-full sm:flex-row md:space-x-0 space-x-3.5 items-center justify-evenly">
           <div className="flex flex-col">
-            <h1 className="text-fluid-lg font-bold">
-              Hey there! I&apos;m
-              <FlipWords words={names} />
-            </h1>
-            <h2 className="text-fluid-md">
-              A developer obsessed with efficiency and tools.
-            </h2>
-            <div className="flex w-full flex-row justify-evenly gap-4">
+            <div className="overflow-hidden">
+              <MotionDiv
+                className="inline-block"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <h1 className="text-fluid-lg font-bold whitespace-nowrap">
+                  Hey there! I&apos;m
+                  <FlipWords words={names} />
+                </h1>
+              </MotionDiv>
+            </div>
+            <div className="overflow-hidden">
+              <MotionDiv
+                className="inline-block"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <h2 className="text-fluid-md">
+                  A developer obsessed with efficiency and tools.
+                </h2>
+              </MotionDiv>
+            </div>
+            <MotionDiv
+              className="flex w-full flex-row justify-evenly gap-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+            >
               <Button asChild className="mt-4">
                 <a
                   href={`https://github.com/${githubUsername}`}
@@ -48,9 +72,14 @@ export default function Home() {
                 </a>
               </Button>
               <FunnyButton />
-            </div>
+            </MotionDiv>
           </div>
-          <div className="flex w-fluid-lg h-fluid-lg overflow-hidden">
+          <MotionDiv
+            className="flex sm:order-last order-first w-fluid-lg h-fluid-lg overflow-hidden"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+          >
             <Image
               src={githubProfilePicture}
               alt="GitHub Profile Picture"
@@ -59,7 +88,7 @@ export default function Home() {
               height={1}
               className="object-cover"
             />
-          </div>
+          </MotionDiv>
         </div>
       </div>
     </div>
