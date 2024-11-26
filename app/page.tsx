@@ -16,7 +16,7 @@ export default function Home() {
     <div className="flex w-full h-screen flex-col">
       <Navbar />
       <div className="flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
-        <div className="flex flex-col w-full sm:flex-row md:space-x-0 space-x-3.5 items-center justify-evenly">
+        <div className="flex flex-col w-full gap-5 sm:gap-0 sm:flex-row md:space-x-0 space-x-3.5 items-center justify-evenly">
           <div className="flex flex-col">
             <div className="overflow-hidden">
               <MotionDiv
