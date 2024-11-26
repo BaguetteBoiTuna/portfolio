@@ -4,12 +4,12 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 
 export default function Tools() {
   const tools = [
-    "Editor",
-    "Terminal",
-    "Apps",
-    "CLI Tools",
-    "Browser",
-    "Websites",
+    "This is the Editor",
+    "This is the Terminal",
+    "These are the Apps",
+    "These are the CLI Tools",
+    "This is the Browser",
+    "These are the Websites",
   ];
 
   const toolCards = [
@@ -57,7 +57,6 @@ export default function Tools() {
             transition={{ duration: 1 }}
           >
             <h1 className="text-fluid-lg font-bold whitespace-nowrap">
-              This is the
               <FlipWords words={tools} />
             </h1>
           </MotionDiv>
