@@ -1,39 +1,26 @@
 "use client";
-import { Link } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
-import type { Route } from "next";
 
-interface RouterLinkProps {
-  href: string;
-  children: string;
-  className?: string;
-  isExternal?: boolean;
-  isBlock?: boolean;
-  isDisabled?: boolean;
-  ping?: string;
-  download?: string | boolean;
-  rel?: string;
-  underline?: "none" | "hover" | "always" | "active" | "focus";
-  color?:
-    | "primary"
-    | "secondary"
-    | "success"
-    | "warning"
-    | "danger"
-    | "foreground";
-  size?: "sm" | "md" | "lg";
-}
+import { forwardRef } from "react";
+import {
+  Link as NextUiLink,
+  LinkProps as NextUiLinkProps,
+} from "@nextui-org/react";
+import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
-export default function RouterLink({ ...props }: RouterLinkProps) {
-  const router = useRouter();
+type CombinedLinkProps = NextUiLinkProps & NextLinkProps;
 
-  const handleLinkClick = () => {
-    router.push(props.href as Route);
-  };
+const RouterLink = forwardRef<HTMLAnchorElement, CombinedLinkProps>(
+  ({ href, children, ...props }, ref) => {
+    return (
+      <NextLink href={href} passHref legacyBehavior>
+        <NextUiLink ref={ref} {...props}>
+          {children}
+        </NextUiLink>
+      </NextLink>
+    );
+  },
+);
 
-  return (
-    <Link onClick={handleLinkClick} {...props}>
-      {props.children}
-    </Link>
-  );
-}
+RouterLink.displayName = "RouterLink";
+
+export default RouterLink;

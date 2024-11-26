@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers";
+import Navbar from "@/components/ui/navbar";
+import { StarsBackground } from "@/components/ui/stars-background";
+import { ShootingStars } from "@/components/ui/shooting-stars";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,7 +34,14 @@ export default function RootLayout({
       >
         <Providers>
           <main className="min-h-screen flex flex-col items-center">
-            {children}
+            <div className="flex w-full h-screen flex-col">
+              <Navbar />
+              <div className="flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
+                {children}
+              </div>
+            </div>
+            <ShootingStars />
+            <StarsBackground />
           </main>
         </Providers>
       </body>

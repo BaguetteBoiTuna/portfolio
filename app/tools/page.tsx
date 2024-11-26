@@ -1,8 +1,5 @@
-import Navbar from "@/components/ui/navbar";
 import { FlipWords } from "@/components/ui/flip-words";
 import MotionDiv from "@/components/ui/motion-div";
-import { ShootingStars } from "@/components/ui/shooting-stars";
-import { StarsBackground } from "@/components/ui/stars-background";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 
 export default function Tools() {
@@ -50,47 +47,42 @@ export default function Tools() {
   ];
 
   return (
-    <div className="flex w-full h-screen flex-col">
-      <Navbar />
-      <div className="flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-start">
-        <div className="flex flex-col justify-center items-center p-10">
-          <div className="overflow-hidden">
-            <MotionDiv
-              className="inline-block"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h1 className="text-fluid-lg font-bold whitespace-nowrap">
-                This is the
-                <FlipWords words={tools} />
-              </h1>
-            </MotionDiv>
-          </div>
-          <div className="overflow-hidden">
-            <MotionDiv
-              className="inline-block"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <h2 className="text-fluid-md">
-                I use everyday to make my life easier.
-              </h2>
-            </MotionDiv>
-          </div>
+    <div>
+      <div className="flex flex-col justify-center items-center p-10">
+        <div className="overflow-hidden">
+          <MotionDiv
+            className="inline-block"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <h1 className="text-fluid-lg font-bold whitespace-nowrap">
+              This is the
+              <FlipWords words={tools} />
+            </h1>
+          </MotionDiv>
         </div>
-        <MotionDiv
-          className="flex"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <HoverEffect items={toolCards} />
-        </MotionDiv>
+        <div className="overflow-hidden">
+          <MotionDiv
+            className="inline-block"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <h2 className="text-fluid-md">
+              I use everyday to make my life easier.
+            </h2>
+          </MotionDiv>
+        </div>
       </div>
-      <ShootingStars />
-      <StarsBackground />
+      <MotionDiv
+        className="flex"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <HoverEffect items={toolCards} />
+      </MotionDiv>
     </div>
   );
 }

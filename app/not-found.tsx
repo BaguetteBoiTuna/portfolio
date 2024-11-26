@@ -1,13 +1,15 @@
-import { TypewriterEffectSmooth } from "./typewriter-effect";
-import { Button } from "./button";
+import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
-import MotionDiv from "./motion-div";
+import MotionDiv from "@/components/ui/motion-div";
 import Link from "next/link";
 
-const ComingSoon = () => {
+export default function NotFound() {
   const words = [
-    { text: "Coming" },
-    { text: "Soon", className: "text-blue-500" },
+    { text: "404", className: "text-blue-500" },
+    { text: "|" },
+    { text: "Not" },
+    { text: "Found" },
   ];
 
   return (
@@ -32,6 +34,4 @@ const ComingSoon = () => {
       </MotionDiv>
     </div>
   );
-};
-
-export default ComingSoon;
+}
