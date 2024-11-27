@@ -57,7 +57,7 @@ export default function RootLayout({
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex w-full h-screen flex-col">
               <Navbar />
-              <div className="flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
+              <div className="z-50 flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
                 <LayoutTransition
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
