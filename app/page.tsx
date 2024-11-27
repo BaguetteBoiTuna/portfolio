@@ -12,7 +12,7 @@ export default function Home() {
   const githubProfilePicture = `https://github.com/${githubUsername}.png`;
 
   return (
-    <div className="z-50 flex flex-col w-full gap-5 sm:gap-0 sm:flex-row md:space-x-0 space-x-3.5 items-center justify-evenly">
+    <div className="z-50 flex flex-col w-full gap-5 sm:gap-10 sm:flex-row md:space-x-0 space-x-3.5 items-center justify-evenly">
       <div className="flex flex-col">
         <div className="overflow-hidden">
           <MotionDiv

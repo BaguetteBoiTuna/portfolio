@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import Navbar from "@/components/ui/navbar";
 import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
+import { LayoutTransition } from "@/components/animations/layout-transition";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,7 +38,14 @@ export default function RootLayout({
             <div className="flex w-full h-screen flex-col">
               <Navbar />
               <div className="flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
-                {children}
+                <LayoutTransition
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, y: -30 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  {children}
+                </LayoutTransition>
               </div>
             </div>
             <ShootingStars />
