@@ -20,25 +20,22 @@ export default function MinimalNavBar() {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
-        <RouterLink href="/" className="font-getai text-3xl text-deep-blue">
+        <RouterLink href="/" className="text-3xl text-deep-blue">
           TunaSub
         </RouterLink>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex" justify="center">
         <NavbarItem>
-          <RouterLink href="/about" className="font-satoshi">
-            About
-          </RouterLink>
+          <RouterLink href="/">Home</RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/tools" className="font-satoshi">
-            Tools
-          </RouterLink>
+          <RouterLink href="/about">About</RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/projects" className="font-satoshi">
-            Projects
-          </RouterLink>
+          <RouterLink href="/tools">Tools</RouterLink>
+        </NavbarItem>
+        <NavbarItem>
+          <RouterLink href="/projects">Projects</RouterLink>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">
@@ -49,19 +46,16 @@ export default function MinimalNavBar() {
       </NavbarContent>
       <NavbarMenu className="sm:hidden w-full rounded-xl mt-4 p-5 gap-3">
         <NavbarMenuItem>
-          <RouterLink href="/about" className="font-satoshi">
-            About
-          </RouterLink>
+          <RouterLink href="/">Home</RouterLink>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <RouterLink href="/about" className="font-satoshi">
-            Tools
-          </RouterLink>
+          <RouterLink href="/about">About</RouterLink>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <RouterLink href="/projects" className="font-satoshi">
-            Projects
-          </RouterLink>
+          <RouterLink href="/tools">Tools</RouterLink>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <RouterLink href="/projects">Projects</RouterLink>
         </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
