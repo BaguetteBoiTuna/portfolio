@@ -4,6 +4,7 @@ import { Github, Twitter } from "lucide-react";
 import Image from "next/image";
 import FunnyButton from "@/components/ui/funny-button";
 import MotionDiv from "@/components/ui/motion-div";
+import { bounce } from "@/components/animations/animation-utils";
 
 export default function Home() {
   const names = ["Dante", "TunaSub", "BaguetteBoiTuna"];
@@ -17,9 +18,9 @@ export default function Home() {
         <div className="overflow-hidden">
           <MotionDiv
             className="inline-block"
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={bounce}
           >
             <h1 className="text-fluid-lg font-bold whitespace-nowrap">
               Hey there! I&apos;m
@@ -30,9 +31,9 @@ export default function Home() {
         <div className="overflow-hidden">
           <MotionDiv
             className="inline-block"
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={bounce}
           >
             <h2 className="text-fluid-md">
               A developer obsessed with efficiency and tools.
@@ -41,9 +42,9 @@ export default function Home() {
         </div>
         <MotionDiv
           className="flex w-full flex-row justify-evenly gap-4"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={bounce}
         >
           <Button asChild className="mt-4">
             <a
@@ -74,7 +75,7 @@ export default function Home() {
         className="flex sm:order-last order-first w-fluid-lg h-fluid-lg overflow-hidden"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1 }}
+        transition={bounce}
       >
         <Image
           src={githubProfilePicture}

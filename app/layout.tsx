@@ -7,6 +7,7 @@ import { StarsBackground } from "@/components/ui/stars-background";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { LayoutTransition } from "@/components/animations/layout-transition";
 import MotionDiv from "@/components/ui/motion-div";
+import { bounce } from "@/components/animations/animation-utils";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -60,7 +61,7 @@ export default function RootLayout({
               <MotionDiv
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: "easeInOut" }}
+                transition={bounce}
               >
                 <Navbar />
               </MotionDiv>
@@ -68,8 +69,8 @@ export default function RootLayout({
                 <LayoutTransition
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, y: -30 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  exit={{ opacity: 0, y: -40 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
                   {children}
                 </LayoutTransition>

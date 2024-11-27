@@ -1,6 +1,7 @@
 import { FlipWords } from "@/components/ui/flip-words";
 import MotionDiv from "@/components/ui/motion-div";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
+import { bounce } from "@/components/animations/animation-utils";
 
 export default function Tools() {
   const tools = [
@@ -54,7 +55,7 @@ export default function Tools() {
             className="inline-block"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={bounce}
           >
             <h1 className="text-fluid-lg font-bold whitespace-nowrap">
               <FlipWords words={tools} />
@@ -66,7 +67,7 @@ export default function Tools() {
             className="inline-block"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={bounce}
           >
             <h2 className="text-fluid-md">
               I use everyday to make my life easier.
@@ -78,7 +79,7 @@ export default function Tools() {
         className="flex"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
+        transition={bounce}
       >
         <HoverEffect items={toolCards} />
       </MotionDiv>
