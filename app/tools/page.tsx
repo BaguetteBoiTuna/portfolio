@@ -16,7 +16,7 @@ export default function Tools() {
   const toolCards = [
     {
       title: "Editor",
-      description: "How I edit my code with ease and style.",
+      description: "The tool I use to write and refine my code efficiently.",
       link: "/tools/editor",
     },
     {
@@ -42,7 +42,7 @@ export default function Tools() {
     },
     {
       title: "Websites",
-      description: "Sites that are essential for my projects and inspiration.",
+      description: "Useful sites that save me lots of time.",
       link: "/tools/websites",
     },
   ];

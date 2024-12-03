@@ -16,7 +16,7 @@ export default function MinimalNavBar() {
 
   return (
     <Navbar
-      className="w-full sm:w-[70%] rounded-xl mt-3 mx-auto"
+      className="w-full z-50 sm:w-[70%] rounded-xl mt-3 mx-auto"
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
@@ -44,7 +44,7 @@ export default function MinimalNavBar() {
           className="sm:hidden text-deep-blue"
         />
       </NavbarContent>
-      <NavbarMenu className="sm:hidden w-full rounded-xl mt-4 p-5 gap-3">
+      <NavbarMenu className="sm:hidden z-50 w-full rounded-xl mt-4 p-5 gap-3">
         <NavbarMenuItem>
           <RouterLink href="/">Home</RouterLink>
         </NavbarMenuItem>

@@ -65,7 +65,7 @@ export default function RootLayout({
               >
                 <Navbar />
               </MotionDiv>
-              <div className="z-50 flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
+              <div className="z-40 flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
                 <LayoutTransition
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
