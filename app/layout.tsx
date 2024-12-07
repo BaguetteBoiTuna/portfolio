@@ -67,8 +67,6 @@ export default function RootLayout({
               </MotionDiv>
               <div className="z-40 flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
                 <LayoutTransition
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
                   exit={{ opacity: 0, y: -40 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >

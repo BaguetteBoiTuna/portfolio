@@ -41,8 +41,8 @@ interface LayoutTransitionProps {
   children: React.ReactNode;
   className?: React.ComponentProps<typeof motion.div>["className"];
   style?: React.ComponentProps<typeof motion.div>["style"];
-  initial: React.ComponentProps<typeof motion.div>["initial"];
-  animate: React.ComponentProps<typeof motion.div>["animate"];
+  initial?: React.ComponentProps<typeof motion.div>["initial"];
+  animate?: React.ComponentProps<typeof motion.div>["animate"];
   exit: React.ComponentProps<typeof motion.div>["exit"];
   transition: React.ComponentProps<typeof motion.div>["transition"];
 }

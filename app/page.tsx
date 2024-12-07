@@ -41,7 +41,7 @@ export default function Home() {
           </MotionDiv>
         </div>
         <MotionDiv
-          className="flex w-full flex-row justify-evenly gap-4"
+          className="flex w-full flex-col sm:flex-row justify-evenly sm:gap-4"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={bounce}
