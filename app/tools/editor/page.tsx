@@ -2,7 +2,7 @@ import { LinkPreview } from "@/components/ui/link-preview";
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
 
-export default function Websites() {
+export default function Editor() {
   return (
     <div className="flex">
       <div className="flex flex-col">

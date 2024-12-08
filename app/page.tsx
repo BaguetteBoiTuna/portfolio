@@ -1,10 +1,10 @@
 import { FlipWords } from "@/components/ui/flip-words";
 import { Button } from "@/components/ui/button";
 import { Github, Twitter } from "lucide-react";
-import Image from "next/image";
 import FunnyButton from "@/components/ui/funny-button";
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
+import { Hover3DImage } from "@/components/ui/3d-image";
 
 export default function Home() {
   const names = ["Dante", "TunaSub", "BaguetteBoiTuna"];
@@ -72,19 +72,12 @@ export default function Home() {
         </MotionDiv>
       </div>
       <MotionDiv
-        className="flex sm:order-last order-first w-fluid-lg h-fluid-lg overflow-hidden"
+        className="relative flex sm:order-last order-first w-fluid-lg h-fluid-lg"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={bounce}
       >
-        <Image
-          src={githubProfilePicture}
-          alt="GitHub Profile Picture"
-          layout="responsive"
-          width={1}
-          height={1}
-          className="object-cover"
-        />
+        <Hover3DImage src={githubProfilePicture} alt="Github Profile Picture" />
       </MotionDiv>
     </div>
   );
