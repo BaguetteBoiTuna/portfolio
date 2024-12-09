@@ -14,8 +14,7 @@ export const Hover3DImage = ({ src, alt }: { src: string; alt: string }) => {
       innerRef.current.getBoundingClientRect();
     const x = (e.clientX - left - width / 2) / 25;
     const y = (e.clientY - top - height / 2) / 25;
-    const zTranslate = isHovered ? "translateZ(50px)" : "";
-    innerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg) ${zTranslate}`;
+    innerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
 
   const handleMouseEnter = () => {
@@ -30,34 +29,35 @@ export const Hover3DImage = ({ src, alt }: { src: string; alt: string }) => {
 
   return (
     <div
-      ref={outerRef}
       style={{
         perspective: "1000px",
-        overflow: "visible",
-        position: "relative",
         width: "100%",
         height: "100%",
+        position: "relative",
+        overflow: "visible",
       }}
     >
       <div
-        ref={innerRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+        ref={outerRef}
         style={{
           transformStyle: "preserve-3d",
-          transition: "transform 0.2s ease-linear",
+          transition: "transform 0.2s ease",
+          transform: isHovered ? "translateZ(100px)" : "translateZ(0px)",
           width: "100%",
           height: "100%",
           position: "relative",
         }}
       >
         <div
+          ref={innerRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
           style={{
             transformStyle: "preserve-3d",
-            position: "relative",
             width: "100%",
             height: "100%",
+            position: "relative",
           }}
         >
           <Image src={src} alt={alt} fill className="object-cover" />
