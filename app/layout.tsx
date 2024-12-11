@@ -65,14 +65,13 @@ export default function RootLayout({
               >
                 <Navbar />
               </MotionDiv>
-              <div className="z-40 flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center">
-                <LayoutTransition
-                  exit={{ opacity: 0, y: -40 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                >
-                  {children}
-                </LayoutTransition>
-              </div>
+              <LayoutTransition
+                exit={{ opacity: 0, y: -40 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="z-40 flex flex-col mx-auto w-full sm:max-w-[92%] md:max-w-[80%] h-full items-center justify-center"
+              >
+                {children}
+              </LayoutTransition>
             </div>
             <ShootingStars />
             <StarsBackground />
