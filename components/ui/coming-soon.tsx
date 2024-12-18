@@ -3,6 +3,7 @@ import { Button } from "./button";
 import { Home } from "lucide-react";
 import MotionDiv from "./motion-div";
 import Link from "next/link";
+import GlitchText from "./glitch-text";
 
 const ComingSoon = () => {
   const words = [
@@ -22,11 +23,11 @@ const ComingSoon = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 5, delay: 3.5 }}
       >
-        <Button asChild className="mt-4">
+        <Button asChild className="mt-4 group">
           <Link href="/">
             {" "}
             <Home size={18} />
-            Go Home
+            <GlitchText text="Go Home" color="black" />
           </Link>
         </Button>
       </MotionDiv>

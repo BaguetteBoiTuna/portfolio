@@ -1,6 +1,7 @@
 import { LinkPreview } from "@/components/ui/link-preview";
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
+import GlitchText from "@/components/ui/glitch-text";
 
 export default function Editor() {
   return (
@@ -13,8 +14,11 @@ export default function Editor() {
           transition={bounce}
         >
           <h1 className="text-fluid-lg text-neutral-500 dark:text-neutral-400 mx-auto">
-            <LinkPreview url="https://www.lazyvim.org/" className="font-bold">
-              LazyVim{" "}
+            <LinkPreview
+              url="https://www.lazyvim.org/"
+              className="font-bold group"
+            >
+              <GlitchText text="LazyVim" />{" "}
             </LinkPreview>
             is my go-to editor.
           </h1>
@@ -30,8 +34,8 @@ export default function Editor() {
         >
           <h1 className="text-fluid-lg text-neutral-500 dark:text-neutral-400 mx-auto">
             But I also enjoy using{" "}
-            <LinkPreview url="https://zed.dev/" className="font-bold">
-              Zed
+            <LinkPreview url="https://zed.dev/" className="font-bold group">
+              <GlitchText text="Zed" />
             </LinkPreview>
             .
           </h1>
