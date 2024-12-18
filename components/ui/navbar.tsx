@@ -10,6 +10,7 @@ import {
   NavbarContent,
 } from "@nextui-org/react";
 import RouterLink from "./router-link";
+import GlitchText from "./glitch-text";
 
 export default function MinimalNavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,22 +21,30 @@ export default function MinimalNavBar() {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
-        <RouterLink href="/" className="text-3xl text-deep-blue">
-          TunaSub
+        <RouterLink href="/" className="text-3xl group">
+          <GlitchText text="TunaSub" />
         </RouterLink>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex" justify="center">
         <NavbarItem>
-          <RouterLink href="/">Home</RouterLink>
+          <RouterLink href="/" className="group">
+            <GlitchText text="Home" />
+          </RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/about">About</RouterLink>
+          <RouterLink href="/about" className="group">
+            <GlitchText text="About" />
+          </RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/tools">Tools</RouterLink>
+          <RouterLink href="/tools" className="group">
+            <GlitchText text="Tools" />
+          </RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/projects">Projects</RouterLink>
+          <RouterLink href="/projects" className="group">
+            <GlitchText text="Projects" />
+          </RouterLink>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">

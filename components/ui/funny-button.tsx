@@ -12,12 +12,15 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { TextReveal } from "./text-reveal";
+import GlitchText from "./glitch-text";
 
 function FunnyButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="mt-4 w-full">Don&apos;t click me</Button>
+        <Button className="mt-4 w-full group">
+          <GlitchText text="Don't click me" color="black" />
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

@@ -5,6 +5,7 @@ import FunnyButton from "@/components/ui/funny-button";
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
 import { Hover3DImage } from "@/components/ui/3d-image";
+import GlitchText from "@/components/ui/glitch-text";
 
 export default function Home() {
   const names = ["Dante", "TunaSub", "BaguetteBoiTuna"];
@@ -46,7 +47,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={bounce}
         >
-          <Button asChild className="mt-4">
+          <Button asChild className="mt-4 group">
             <a
               href={`https://github.com/${githubUsername}`}
               target="_blank"
@@ -54,10 +55,10 @@ export default function Home() {
               className="flex w-full items-center gap-2"
             >
               <Github size={18} />
-              GitHub
+              <GlitchText text="Github" color="black" />
             </a>
           </Button>
-          <Button asChild className="mt-4">
+          <Button asChild className="mt-4 group">
             <a
               href={`https://x.com/${twitterUsername}`}
               target="_blank"
@@ -65,7 +66,7 @@ export default function Home() {
               className="flex w-full items-center gap-2"
             >
               <Twitter size={18} />
-              Twitter
+              <GlitchText text="Twitter" color="black" />
             </a>
           </Button>
           <FunnyButton />
