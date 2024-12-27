@@ -27,6 +27,7 @@ const config = {
     extend: {
       fontSize: {
         "fluid-sm": "clamp(0.875rem, 2vw, 1.25rem)",
+        "fluid-smd": "clamp(0.9375rem, 2.25vw, 1.75rem)",
         "fluid-md": "clamp(1rem, 2.5vw, 2.5rem)",
         "fluid-lg": "clamp(1.5rem, 3vw, 3rem)",
         "fluid-xlg": "clamp(2rem, 5vw, 4rem)",

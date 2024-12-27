@@ -21,6 +21,15 @@ const ComingSoon = () => {
       <MotionDiv
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        transition={{ duration: 5, delay: 2.5 }}
+      >
+        <p className="text-fluid-md text-neutral-500 dark:text-neutral-400 mx-auto">
+          I got classes/projects to work on so its coming &quot;Soon&quot;.
+        </p>
+      </MotionDiv>
+      <MotionDiv
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 5, delay: 3.5 }}
       >
         <Button asChild className="mt-4 group">
