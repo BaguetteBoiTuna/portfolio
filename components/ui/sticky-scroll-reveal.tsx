@@ -3,6 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Button } from "./button";
+import GlitchText from "./glitch-text";
+import { ArrowRight } from "lucide-react";
 
 export const StickyScroll = ({
   content,
@@ -10,6 +13,7 @@ export const StickyScroll = ({
 }: {
   content: {
     title: string;
+    url: string;
     description: string;
     //eslint-disable-next-line
     content?: React.ReactNode | any;
@@ -42,6 +46,7 @@ export const StickyScroll = ({
     setActiveCard(closestBreakpointIndex);
   });
 
+  //eslint-disable-next-line
   const backgroundColors = [
     "var(--slate-900)",
     "var(--black)",
@@ -64,9 +69,10 @@ export const StickyScroll = ({
 
   return (
     <motion.div
-      animate={{
-        backgroundColor: backgroundColors[activeCard % backgroundColors.length],
-      }}
+      // INFO: uncomment this if you want an opaque background with color shifts
+      // animate={{
+      //   backgroundColor: backgroundColors[activeCard % backgroundColors.length],
+      // }}
       className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10"
       ref={ref}
     >
@@ -74,17 +80,30 @@ export const StickyScroll = ({
         <div className="max-w-2xl">
           {content.map((item, index) => (
             <div key={item.title + index} className="my-20">
-              <motion.h2
+              <motion.div
                 initial={{
                   opacity: 0,
                 }}
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-2xl font-bold text-slate-100"
+                className="flex flex-row items-center justify-between"
               >
-                {item.title}
-              </motion.h2>
+                <h2 className="text-2xl font-bold text-slate-100 ">
+                  {item.title}
+                </h2>
+                <Button asChild className="group">
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center"
+                  >
+                    <GlitchText text="Check it out" color="black" />
+                    <ArrowRight size={18} />
+                  </a>
+                </Button>
+              </motion.div>
               <motion.p
                 initial={{
                   opacity: 0,
@@ -104,7 +123,7 @@ export const StickyScroll = ({
       <div
         style={{ background: backgroundGradient }}
         className={cn(
-          "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
+          "hidden lg:block h-80 w-96  rounded-md bg-white sticky top-10 overflow-hidden",
           contentClassName,
         )}
       >

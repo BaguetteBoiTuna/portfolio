@@ -11,6 +11,7 @@ export default function ToolsLayout({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -40 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="flex h-full w-full"
     >
       {children}
     </LayoutTransition>
