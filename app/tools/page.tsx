@@ -25,23 +25,23 @@ export default function Tools() {
       link: "/tools/terminal",
     },
     {
-      title: "Apps",
+      title: "Apps - Coming Soon",
       description: "The apps that keep my workflow smooth and efficient.",
       link: "/tools/apps",
     },
     {
-      title: "CLI Tools",
+      title: "CLI Tools - Coming Soon",
       description:
         "Command-line tools I rely on to supercharge my productivity.",
       link: "/tools/cli-tools",
     },
     {
-      title: "Browser",
+      title: "Browser - Coming Soon",
       description: "Where I research, explore and sometimes procrastinate.",
       link: "/tools/browser",
     },
     {
-      title: "Websites",
+      title: "Websites - Coming Soon",
       description: "Useful sites that save me lots of time.",
       link: "/tools/websites",
     },
