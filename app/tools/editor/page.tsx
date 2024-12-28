@@ -40,6 +40,7 @@ export default function Editor() {
       ),
     },
   ];
+
   return (
     <MotionDiv
       initial={{ opacity: 0, scale: 0.95 }}
