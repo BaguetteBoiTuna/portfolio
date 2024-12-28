@@ -48,7 +48,7 @@ export default function Tools() {
   ];
 
   return (
-    <div>
+    <div className="flex h-full w-full flex-col justify-center items-center">
       <div className="flex flex-col justify-center items-center p-10">
         <div className="overflow-hidden">
           <MotionDiv
