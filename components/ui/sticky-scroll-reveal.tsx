@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import GlitchText from "./glitch-text";
 import { ArrowRight } from "lucide-react";
+import { Skeleton } from "./skeleton";
 
 export const StickyScroll = ({
   content,
@@ -52,20 +53,6 @@ export const StickyScroll = ({
     "var(--black)",
     "var(--neutral-900)",
   ];
-  const linearGradients = [
-    "linear-gradient(to bottom right, var(--cyan-500), var(--emerald-500))",
-    "linear-gradient(to bottom right, var(--pink-500), var(--indigo-500))",
-    "linear-gradient(to bottom right, var(--orange-500), var(--yellow-500))",
-  ];
-
-  const [backgroundGradient, setBackgroundGradient] = useState(
-    linearGradients[0],
-  );
-
-  useEffect(() => {
-    setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
-    //eslint-disable-next-line
-  }, [activeCard]);
 
   return (
     <motion.div
@@ -132,13 +119,12 @@ export const StickyScroll = ({
         </div>
       </div>
       <div
-        style={{ background: backgroundGradient }}
         className={cn(
-          "hidden lg:block h-80 w-96  rounded-md bg-white sticky top-20 overflow-hidden",
+          "hidden lg:block h-80 w-96 rounded-md sticky top-20 overflow-hidden",
           contentClassName,
         )}
       >
-        {content[activeCard].content ?? null}
+        {content[activeCard].content ?? <Skeleton className="h-full w-full" />}
       </div>
     </motion.div>
   );

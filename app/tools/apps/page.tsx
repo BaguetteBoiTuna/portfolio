@@ -1,5 +1,5 @@
 import ComingSoon from "@/components/ui/coming-soon";
 
-export default function Websites() {
+export default function Apps() {
   return <ComingSoon />;
 }
