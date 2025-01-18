@@ -1,5 +1,3 @@
-"use client";
-// INFO: Weird issue with PopupModalImage is forcing me to set the page as client
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
 import PopupModalImage from "@/components/ui/popup-modal-image";

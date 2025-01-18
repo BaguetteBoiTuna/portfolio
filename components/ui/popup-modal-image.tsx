@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
@@ -21,14 +21,35 @@ export default function PopupModalImage({
   className,
 }: PopupModalImageProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [portalNode, setPortalNode] = useState<HTMLElement | null>(null);
 
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setPortalNode(document.body);
+    }
+  }, []);
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  if (!portalNode) {
+    return (
+      <motion.div
+        className="relative group cursor-pointer"
+        onClick={handleOpen}
+        layoutId={`modal-image-${src}`}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className={`${className} transition-transform group-hover:scale-105`}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none"></div>
+      </motion.div>
+    );
+  }
 
   return (
     <LayoutGroup>
@@ -72,7 +93,7 @@ export default function PopupModalImage({
             </motion.div>
           )}
         </AnimatePresence>,
-        document.body,
+        portalNode,
       )}
     </LayoutGroup>
   );
