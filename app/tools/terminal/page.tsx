@@ -1,6 +1,6 @@
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
-import Image from "next/image";
+import PopupModalImage from "@/components/ui/popup-modal-image";
 import { StickyScroll } from "@/components/ui/sticky-scroll-reveal";
 
 export default function Terminal() {
@@ -12,7 +12,7 @@ export default function Terminal() {
         "I switched to Ghostty on day one because it was exactly what I was looking for in a terminal: native ui, easy to configure/theme, and blazingly fast. Its platform-native GUI ensures seamless integration with macos and linux incase I switch back to Arch one day, providing a cohesive user experience. Additionally, ghostty supports modern terminal specifications like styled underlines and the kitty graphics protocol, enhancing its versatility.",
       content: (
         <div className="h-full w-full  flex items-center justify-center text-white">
-          <Image
+          <PopupModalImage
             src="/ghostty.webp"
             width={1000}
             height={800}
@@ -29,7 +29,7 @@ export default function Terminal() {
         "Before Ghostty, I used iTerm2 because I encountered issues with WezTerm during extended use. iTerm2 is a highly customizable terminal emulator for macOS, offering features like split panes, hotkey windows, and a robust scripting API. However, it includes a plethora of features that exceeded my needs, making it more complex than necessary for my use case.",
       content: (
         <div className="h-full w-full  flex items-center justify-center text-white">
-          <Image
+          <PopupModalImage
             src="/iterm.webp"
             width={1000}
             height={800}
@@ -46,7 +46,7 @@ export default function Terminal() {
         "Initially, upon switching to macOS, I chose WezTerm due to its Lua-based configuration, which appealed to my preference for scriptable setups. Unfortunately, I experienced minor graphical issues during prolonged sessions.",
       content: (
         <div className="h-full w-full  flex items-center justify-center text-white">
-          <Image
+          <PopupModalImage
             src="/wezterm.webp"
             width={1000}
             height={800}
