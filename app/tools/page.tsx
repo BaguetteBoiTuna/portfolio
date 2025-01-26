@@ -36,7 +36,7 @@ export default function Tools() {
       link: "/tools/cli-tools",
     },
     {
-      title: "Browser - Coming Soon",
+      title: "Browser",
       description: "Where I research, explore and sometimes procrastinate.",
       link: "/tools/browser",
     },

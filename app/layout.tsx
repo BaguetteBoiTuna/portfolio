@@ -8,6 +8,7 @@ import { ShootingStars } from "@/components/ui/shooting-stars";
 import { LayoutTransition } from "@/components/animations/layout-transition";
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
+import SpotifyWidget from "@/components/ui/widget-spotify";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -57,6 +58,7 @@ export default function RootLayout({
       >
         <Providers>
           <main className="min-h-screen flex flex-col items-center">
+            <SpotifyWidget />
             <div className="flex w-full h-screen flex-col">
               <MotionDiv
                 initial={{ opacity: 0, y: -30 }}
