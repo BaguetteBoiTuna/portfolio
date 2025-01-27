@@ -47,7 +47,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={bounce}
         >
-          <Button asChild className="mt-4 group">
+          <Button asChild className="mt-4 glitch">
             <a
               href={`https://github.com/${githubUsername}`}
               target="_blank"
@@ -58,7 +58,7 @@ export default function Home() {
               <GlitchText text="Github" color="black" />
             </a>
           </Button>
-          <Button asChild className="mt-4 group">
+          <Button asChild className="mt-4 glitch">
             <a
               href={`https://x.com/${twitterUsername}`}
               target="_blank"

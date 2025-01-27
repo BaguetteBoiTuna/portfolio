@@ -57,7 +57,7 @@ export default function GlitchText({
           color: ${color};
         }
 
-        :global(.group:hover) span::after {
+        :global(.glitch:hover) span::after {
           animation: flash calc(var(--speed, 0.25) * 1s)
             calc(var(--index, 0) * 0.05s) steps(1, end);
         }

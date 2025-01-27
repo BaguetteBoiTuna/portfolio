@@ -32,7 +32,7 @@ const ComingSoon = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 5, delay: 3.5 }}
       >
-        <Button asChild className="mt-4 group">
+        <Button asChild className="mt-4 glitch">
           <Link href="/">
             {" "}
             <Home size={18} />

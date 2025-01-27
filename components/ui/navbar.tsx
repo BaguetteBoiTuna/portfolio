@@ -21,28 +21,28 @@ export default function MinimalNavBar() {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
-        <RouterLink href="/" className="text-3xl group">
+        <RouterLink href="/" className="text-3xl glitch">
           <GlitchText text="TunaSub" />
         </RouterLink>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex" justify="center">
         <NavbarItem>
-          <RouterLink href="/" className="group">
+          <RouterLink href="/" className="glitch">
             <GlitchText text="Home" />
           </RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/about" className="group">
+          <RouterLink href="/about" className="glitch">
             <GlitchText text="About" />
           </RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/tools" className="group">
+          <RouterLink href="/tools" className="glitch">
             <GlitchText text="Tools" />
           </RouterLink>
         </NavbarItem>
         <NavbarItem>
-          <RouterLink href="/projects" className="group">
+          <RouterLink href="/projects" className="glitch">
             <GlitchText text="Projects" />
           </RouterLink>
         </NavbarItem>

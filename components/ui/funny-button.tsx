@@ -18,7 +18,7 @@ function FunnyButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="mt-4 w-full group">
+        <Button className="mt-4 w-full glitch">
           <GlitchText text="Don't click me" color="black" />
         </Button>
       </AlertDialogTrigger>

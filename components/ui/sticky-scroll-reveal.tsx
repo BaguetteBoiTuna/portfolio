@@ -90,7 +90,7 @@ export const StickyScroll = ({
                 <h2 className="text-2xl font-bold text-slate-100 ">
                   {item.title}
                 </h2>
-                <Button asChild className="group">
+                <Button asChild className="glitch">
                   <a
                     href={item.url}
                     target="_blank"

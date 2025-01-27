@@ -90,11 +90,40 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "alive-background": {
+          "0%": {
+            transform: "scale(1) translate(0, 0)",
+            backgroundPosition: "50% 50%",
+            opacity: "0.8",
+          },
+          "33%": {
+            transform: "scale(1.03) translate(2px, -3px)",
+            backgroundPosition: "55% 45%",
+            opacity: "0.9",
+          },
+          "66%": {
+            transform: "scale(0.98) translate(-3px, 2px)",
+            backgroundPosition: "45% 55%",
+            opacity: "0.85",
+          },
+          "100%": {
+            transform: "scale(1) translate(0, 0)",
+            backgroundPosition: "50% 50%",
+            opacity: "0.8",
+          },
+        },
+        "alive-foreground": {
+          "0%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.02) rotate(0.5deg)" },
+          "100%": { transform: "scale(1)" },
+        },
       },
       animation: {
         "pulse-blur": "pulse-blur 10s ease-in-out infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "alive-background": "alive-background 15s ease-in-out infinite",
+        "alive-foreground": "alive-foreground 8s ease-in-out infinite",
       },
     },
   },

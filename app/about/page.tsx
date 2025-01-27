@@ -62,7 +62,7 @@ export default function About() {
               It was made using{" "}
               <LinkPreview
                 url="https://nextjs.org/"
-                className="font-bold group"
+                className="font-bold glitch"
               >
                 <GlitchText text="Next.js" />
               </LinkPreview>
