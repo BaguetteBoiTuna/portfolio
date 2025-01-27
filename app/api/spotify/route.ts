@@ -81,19 +81,6 @@ async function updateCache() {
 setInterval(updateCache, 900); // Update slightly faster than cache expiration
 
 export async function GET() {
-  const now = Date.now();
-
-  // Serve stale-while-revalidate if within 2s cache window
-  if (now - cache.lastUpdated < 2000) {
-    return NextResponse.json(cache.data || { error: "No track playing" });
-  }
-
-  // Trigger async cache update if needed
-  if (now - cache.lastUpdated >= 1000) {
-    updateCache().then(() => {
-      cache.lastUpdated = Date.now();
-    });
-  }
-
-  return NextResponse.json(cache.data || { error: "No track playing" });
+  await updateCache();
+  return NextResponse.json(cache.data ?? { error: "no track playing" });
 }
