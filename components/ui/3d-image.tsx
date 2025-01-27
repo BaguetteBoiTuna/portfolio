@@ -60,7 +60,12 @@ export const Hover3DImage = ({ src, alt }: { src: string; alt: string }) => {
             position: "relative",
           }}
         >
-          <Image src={src} alt={alt} fill className="object-cover" />
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            className="object-cover border-3 border-white"
+          />
         </div>
       </div>
     </div>

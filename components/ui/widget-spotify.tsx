@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import ColorTextFromImage from "./color-text-from-image";
 
 type SpotifyTrack = {
   item?: {
@@ -104,8 +105,13 @@ export default function SpotifyWidget() {
       <div className="z-10">
         <h3 className="text-md font-semibold">I&apos;m listening to</h3>
         <p className="text-sm">
-          <span className="font-bold">{track.item?.name || "unknown"}</span> by{" "}
-          {track.item?.artists.map((a) => a.name).join(", ") || "unknown"}
+          <span className="font-bold">
+            <ColorTextFromImage
+              text={track.item?.name || "unknown"}
+              imageUrl={track.item?.album.images[0].url || "/placeholder.png"}
+            />
+          </span>{" "}
+          by {track.item?.artists.map((a) => a.name).join(", ") || "unknown"}
         </p>
       </div>
     </div>
