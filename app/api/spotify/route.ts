@@ -4,103 +4,96 @@ const clientId = process.env.SPOTIFY_ID!;
 const clientSecret = process.env.SPOTIFY_SECRET!;
 const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN!;
 
+// Global cache with atomic updates
+// Im spending alot of time on this so let me use any :3
 const cache = {
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  track: null as any,
+  //eslint-disable-next-line
+  data: null as any,
   expires: 0,
   token: {
     access_token: "",
     expires_at: 0,
-    refreshing: false,
+  },
+  lastUpdated: 0,
+};
+
+// Rate limiter configuration
+const RATE_LIMIT = {
+  spotify: {
+    interval: 1000, // 1 second between Spotify API calls
+    lastCall: 0,
   },
 };
 
-// Shared mutex for token refresh
-const tokenMutex = {
-  locked: false,
-  queue: [] as (() => void)[],
-};
-
-async function acquire() {
-  return new Promise<void>((resolve) => {
-    if (!tokenMutex.locked) {
-      tokenMutex.locked = true;
-      return resolve();
-    }
-    tokenMutex.queue.push(resolve);
-  });
-}
-
-function release() {
-  if (tokenMutex.queue.length > 0) {
-    const next = tokenMutex.queue.shift();
-    next?.();
-  } else {
-    tokenMutex.locked = false;
-  }
-}
-
 async function refreshAccessToken() {
-  await acquire();
-  try {
-    const res = await fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "refresh_token",
-        refresh_token: refreshToken,
-      }),
-    });
-
-    const data = await res.json();
-    cache.token = {
-      access_token: data.access_token,
-      expires_at: Date.now() + data.expires_in * 1000,
-      refreshing: false,
-    };
-  } finally {
-    release();
-  }
-}
-
-async function getNowPlaying() {
-  // Serve cached track if still valid
-  if (Date.now() < cache.expires) {
-    return cache.track;
-  }
-
-  if (!cache.token.access_token || Date.now() >= cache.token.expires_at) {
-    await refreshAccessToken();
-  }
-
-  const res = await fetch(
-    "https://api.spotify.com/v1/me/player/currently-playing",
-    { headers: { Authorization: `Bearer ${cache.token.access_token}` } },
+  const authString = Buffer.from(`${clientId}:${clientSecret}`).toString(
+    "base64",
   );
+  const res = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${authString}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+    }),
+  });
+  const data = await res.json();
+  cache.token = {
+    access_token: data.access_token,
+    expires_at: Date.now() + data.expires_in * 1000,
+  };
+}
 
-  if (res.status === 204) return null;
-  if (res.status === 401) {
-    await refreshAccessToken();
-    return getNowPlaying();
+async function updateCache() {
+  const now = Date.now();
+
+  // Rate limit Spotify API calls
+  if (now - RATE_LIMIT.spotify.lastCall < RATE_LIMIT.spotify.interval) {
+    return;
   }
 
-  const data = await res.json();
-  cache.track = data;
-  cache.expires = Date.now() + 5000; // Cache for 5 seconds
-  return data;
+  try {
+    if (!cache.token.access_token || now >= cache.token.expires_at) {
+      await refreshAccessToken();
+    }
+
+    const res = await fetch(
+      "https://api.spotify.com/v1/me/player/currently-playing",
+      { headers: { Authorization: `Bearer ${cache.token.access_token}` } },
+    );
+
+    if (res.status === 200) {
+      const data = await res.json();
+      cache.data = data;
+      cache.expires = now + 1000; // 1 second cache
+    }
+
+    RATE_LIMIT.spotify.lastCall = now;
+  } catch (error) {
+    console.error("Cache update error:", error);
+  }
 }
+
+// Background updater
+setInterval(updateCache, 900); // Update slightly faster than cache expiration
 
 export async function GET() {
-  try {
-    const track = await getNowPlaying();
-    return NextResponse.json(track || { error: "No track playing" });
-  } catch (err) {
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 500 },
-    );
+  const now = Date.now();
+
+  // Serve stale-while-revalidate if within 2s cache window
+  if (now - cache.lastUpdated < 2000) {
+    return NextResponse.json(cache.data || { error: "No track playing" });
   }
+
+  // Trigger async cache update if needed
+  if (now - cache.lastUpdated >= 1000) {
+    updateCache().then(() => {
+      cache.lastUpdated = Date.now();
+    });
+  }
+
+  return NextResponse.json(cache.data || { error: "No track playing" });
 }

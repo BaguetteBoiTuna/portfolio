@@ -15,18 +15,41 @@ type SpotifyTrack = {
 export default function SpotifyWidget() {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
+    if (!isVisible) return;
+
     const controller = new AbortController();
+    let timeoutId: NodeJS.Timeout;
 
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/spotify", { signal: controller.signal });
+        const res = await fetch(`/api/spotify?cache=${Date.now()}`, {
+          signal: controller.signal,
+        });
         const data: SpotifyTrack = await res.json();
-        setTrack(data.error ? null : data);
+
+        setTrack((prev) => {
+          // Only update if track actually changed
+          if (JSON.stringify(prev?.item) !== JSON.stringify(data?.item)) {
+            return data;
+          }
+          return prev;
+        });
+
+        // Reset retry counter on success
+        setRetryCount(0);
       } catch (err) {
         if (!controller.signal.aborted) {
           console.error(err);
+          // Exponential backoff
+          timeoutId = setTimeout(
+            () => {
+              setRetryCount((c) => Math.min(c + 1, 5));
+            },
+            Math.min(1000 * 2 ** retryCount, 30000),
+          );
         }
       }
     };
@@ -36,21 +59,25 @@ export default function SpotifyWidget() {
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    // Initial fetch
     fetchData();
 
-    // Smart polling based on visibility
-    const interval = setInterval(() => {
-      if (isVisible) fetchData();
-    }, 15000); // Reduced to 15 seconds
+    // Adaptive polling based on network conditions
+    const interval = setInterval(
+      fetchData,
+      retryCount > 0
+        ? 5000 // Slow mode on errors
+        : isVisible
+          ? 1000 // Normal mode
+          : 30000, // Background mode
+    );
 
     return () => {
       controller.abort();
       clearInterval(interval);
+      clearTimeout(timeoutId);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isVisible]);
+  }, [isVisible, retryCount]);
 
   if (!track?.item) return null;
 
@@ -71,6 +98,7 @@ export default function SpotifyWidget() {
           width={80}
           height={80}
           className="relative rounded-md animate-alive-foreground"
+          priority
         />
       </div>
       <div className="z-10">
