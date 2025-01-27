@@ -6,6 +6,7 @@ import ColorTextFromImage from "./color-text-from-image";
 
 type SpotifyTrack = {
   item?: {
+    id: string;
     name: string;
     artists: { name: string }[];
     album: { images: { url: string }[] };
@@ -83,7 +84,7 @@ export default function SpotifyWidget() {
   if (!track?.item) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 p-4 text-white rounded-lg shadow-lg items-center space-x-2 sm:flex hidden">
+    <div className="fixed z-40 bottom-4 left-4 p-4 text-white rounded-lg shadow-lg items-center space-x-2 sm:flex hidden">
       <div className="relative w-[100px] h-[100px] flex items-center justify-center">
         <div
           className="absolute inset-0 rounded-md blur-lg animate-alive-background"
@@ -93,17 +94,24 @@ export default function SpotifyWidget() {
             backgroundPosition: "center",
           }}
         ></div>
-        <Image
-          src={track.item?.album.images[0].url || "/placeholder.png"}
-          alt={track.item?.name || "unknown track"}
-          width={80}
-          height={80}
-          className="relative rounded-md animate-alive-foreground"
-          priority
-        />
+        <a
+          href={`https://open.spotify.com/track/${track.item?.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative transform transition duration-300 hover:scale-110 hover:brightness-75"
+        >
+          <Image
+            src={track.item?.album.images[0].url || "/placeholder.png"}
+            alt={track.item?.name || "unknown track"}
+            width={80}
+            height={80}
+            className="rounded-md"
+            priority
+          />
+        </a>
       </div>
       <div className="z-10">
-        <h3 className="text-md font-semibold">I&apos;m listening to</h3>
+        <h3 className="text-lg font-bold">I&apos;m listening to:</h3>
         <p className="text-sm">
           <span className="font-bold">
             <ColorTextFromImage
