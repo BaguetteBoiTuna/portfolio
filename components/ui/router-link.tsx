@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import {
   Link as NextUiLink,
   LinkProps as NextUiLinkProps,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 
 type CombinedLinkProps = NextUiLinkProps & NextLinkProps;

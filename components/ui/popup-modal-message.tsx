@@ -8,7 +8,7 @@ import {
   ModalFooter,
   useDisclosure,
   Button,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 interface PopupModalMessageProps {
   header: string | ReactElement;

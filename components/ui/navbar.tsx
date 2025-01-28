@@ -8,7 +8,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarContent,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import RouterLink from "./router-link";
 import GlitchText from "./glitch-text";
 
