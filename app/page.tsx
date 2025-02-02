@@ -4,7 +4,7 @@ import { Github, Twitter } from "lucide-react";
 import FunnyButton from "@/components/ui/funny-button";
 import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
-import { Hover3DImage } from "@/components/ui/3d-image";
+import { FlipHover3DImage } from "@/components/ui/flip-3d-image";
 import GlitchText from "@/components/ui/glitch-text";
 
 export default function Home() {
@@ -78,7 +78,11 @@ export default function Home() {
         animate={{ opacity: 1, x: 0 }}
         transition={bounce}
       >
-        <Hover3DImage src={githubProfilePicture} alt="Github Profile Picture" />
+        <FlipHover3DImage
+          frontSrc={githubProfilePicture}
+          backSrc="/qr-code.png"
+          alt="Github Profile Picture"
+        />
       </MotionDiv>
     </div>
   );

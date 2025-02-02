@@ -27,8 +27,8 @@ function FunnyButton() {
           <AlertDialogTitle>why did you click me :(</AlertDialogTitle>
           <div>
             <TextReveal
-              text="Why did you even click this?"
-              revealText="This button is just here for symmetry ¯\_(ツ)_/¯"
+              text="This button is just here for symmetry ¯\_(ツ)_/¯"
+              revealText="But you should click the picture next to it!"
               className="mt-4"
             />
           </div>
