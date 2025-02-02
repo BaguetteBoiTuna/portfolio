@@ -13,7 +13,7 @@ export default function Browser() {
       content: (
         <div className="h-full w-full flex items-center justify-center text-white">
           <PopupModalImage
-            src="https://arc.net/"
+            src="/arcbrowser.webp"
             width={1000}
             height={800}
             className="h-full w-full object-cover"
