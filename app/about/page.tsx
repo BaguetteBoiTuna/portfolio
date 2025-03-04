@@ -3,11 +3,14 @@ import MotionDiv from "@/components/ui/motion-div";
 import { bounce } from "@/components/animations/animation-utils";
 import { Tabs } from "@/components/ui/tabs";
 import GlitchText from "@/components/ui/glitch-text";
+import { Progress } from "@heroui/react";
+import { useMemo } from "react";
 
 export default function About() {
   if (!process.env.BIRTH_DATE)
     throw new Error("Birth date is not set in the .env file.");
   const birthDate = new Date(process.env.BIRTH_DATE);
+
   const calculateAge = (birthDate: Date): number => {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -23,6 +26,29 @@ export default function About() {
     return age;
   };
   const age = calculateAge(birthDate);
+
+  const arrival = new Date("2024-08-29T16:30:00Z").getTime() / 1000;
+  const departure = new Date("2025-06-10T03:40:00Z").getTime() / 1000;
+  const progress = useMemo(() => {
+    const now = Math.floor(Date.now() / 1000);
+    if (now <= arrival) return 0;
+    if (now >= departure) return 100;
+    return ((now - arrival) / (departure - arrival)) * 100;
+  }, [arrival, departure]);
+
+  const timeRemaining = useMemo(() => {
+    const now = Math.floor(Date.now() / 1000);
+    const diff = departure - now;
+    if (diff <= 0) return "You're already back in France!";
+    const days = Math.floor(diff / 86400);
+    if (days < 30) {
+      return `${days} days remaining`;
+    } else {
+      const months = Math.floor(days / 30);
+      return `${months} months remaining`;
+    }
+  }, [departure]);
+
   const tabs = [
     {
       title: "Me",
@@ -78,10 +104,23 @@ export default function About() {
       content: (
         <div className="flex flex-col h-full bg-slate-800 rounded-xl p-6">
           <h1 className="text-fluid-md">About My Location</h1>
-          <div className="flex flex-col h-full w-full items-center justify-center">
+          <div className="flex flex-col h-full w-full items-center justify-center gap-2">
             <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400 mx-auto">
-              Coming Soon :)
+              I am currently studying in Taiwan at National Taipei University
+              (NTPU).
             </h1>
+            <div className="flex flex-row w-full items-center justify-center gap-4">
+              <span className="text-3xl">🛬🇹🇼</span>
+              <Progress
+                aria-label="taiwan-stay"
+                className="max-w-md"
+                value={progress}
+              />
+              <span className="text-3xl">🛫🇫🇷</span>
+            </div>
+            <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400 mx-auto">
+              {timeRemaining}
+            </p>
           </div>
         </div>
       ),
