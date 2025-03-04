@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import ColorTextFromImage from "./color-text-from-image";
+import MotionDiv from "./motion-div";
+import { bounce } from "@/components/animations/animation-utils";
 
 type SpotifyTrack = {
   item?: {
@@ -81,10 +83,60 @@ export default function SpotifyWidget() {
     };
   }, [isVisible, retryCount]);
 
-  if (!track?.item) return null;
+  if (!track?.item)
+    return (
+      <MotionDiv
+        className="fixed z-50 bottom-4 left-4 p-4 text-white rounded-lg shadow-lg items-center space-x-2 sm:flex hidden"
+        initial={{ opacity: 0, x: -40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={bounce}
+      >
+        <div className="relative w-[100px] h-[100px] flex items-center justify-center">
+          <div
+            className="absolute inset-0 rounded-md blur-lg animate-alive-background"
+            style={{
+              backgroundImage: `url(/nothing-playing.jpg)`,
+              backgroundSize: "120% 120%",
+              backgroundPosition: "center",
+            }}
+          ></div>
+          <a
+            href={`https://spotify.com/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative transform transition duration-300 hover:scale-110 hover:brightness-75"
+          >
+            <Image
+              src={"/nothing-playing.jpg"}
+              alt={"nothing playing"}
+              width={80}
+              height={80}
+              className="rounded-md"
+              priority
+            />
+          </a>
+        </div>
+        <div className="relative z-50">
+          <h3 className="text-lg font-bold">No music playing.</h3>
+          <p className="text-sm">
+            <span className="font-bold">
+              <ColorTextFromImage
+                text={"Silence"}
+                imageUrl={"/nothing-playing.jpg"}
+              />
+            </span>
+          </p>
+        </div>
+      </MotionDiv>
+    );
 
   return (
-    <div className="fixed z-50 bottom-4 left-4 p-4 text-white rounded-lg shadow-lg items-center space-x-2 sm:flex hidden">
+    <MotionDiv
+      className="fixed z-50 bottom-4 left-4 p-4 text-white rounded-lg shadow-lg items-center space-x-2 sm:flex hidden"
+      initial={{ opacity: 0, x: -40 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={bounce}
+    >
       <div className="relative w-[100px] h-[100px] flex items-center justify-center">
         <div
           className="absolute inset-0 rounded-md blur-lg animate-alive-background"
@@ -141,6 +193,6 @@ export default function SpotifyWidget() {
           ))}
         </p>
       </div>
-    </div>
+    </MotionDiv>
   );
 }

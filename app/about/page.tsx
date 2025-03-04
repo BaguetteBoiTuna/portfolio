@@ -32,8 +32,8 @@ export default function About() {
           <h1 className="text-fluid-md">About Me</h1>
           <div className="flex flex-col h-full w-full items-center justify-center">
             <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
-              Hey, I&apos;m Dante, a {age} year old fluent in both english and
-              french.
+              Hey, I&apos;m Dante, a {age} year old fluent in both English and
+              French.
             </p>
             <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               Currently studying computer science at Epitech.
