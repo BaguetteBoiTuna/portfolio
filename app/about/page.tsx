@@ -129,7 +129,7 @@ export default function About() {
 
   return (
     <MotionDiv
-      className="h-full w-full flex flex-col"
+      className="h-full w-full flex flex-col items-center justify-items-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={bounce}
