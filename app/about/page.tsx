@@ -56,7 +56,7 @@ export default function About() {
       content: (
         <div className="flex flex-col h-full bg-slate-800 rounded-xl p-6">
           <h1 className="text-fluid-md">About Me</h1>
-          <div className="flex flex-col h-full w-full items-center justify-center">
+          <div className="flex flex-col h-full w-full items-center justify-center text-center">
             <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               Hey, I&apos;m Dante, a {age} year old fluent in both English and
               French.
@@ -77,22 +77,50 @@ export default function About() {
       content: (
         <div className="flex flex-col h-full bg-slate-800 rounded-xl p-6">
           <h1 className="text-fluid-md">About The Site</h1>
-          <div className="flex flex-col h-full w-full items-center justify-center">
-            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400 mx-auto">
+          <div className="flex flex-col h-full w-full items-center justify-center text-center">
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               I made this website for fun.
             </h1>
-            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400 mx-auto">
-              I like to experiment with animations.
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
+              My personal playgound to experiment with animations and
+              components.
             </h1>
-            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400 mx-auto">
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               It was made using{" "}
               <LinkPreview
                 url="https://nextjs.org/"
                 className="font-bold glitch"
               >
                 <GlitchText text="Next.js" />
-              </LinkPreview>
-              .
+              </LinkPreview>{" "}
+              for hybrid rendering.
+            </h1>
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
+              Styling crafted with{" "}
+              <LinkPreview
+                url="https://tailwindcss.com/"
+                className="font-bold glitch"
+              >
+                <GlitchText text="Tailwind 3" />
+              </LinkPreview>{" "}
+              for lightning fast utility-first CSS.
+            </h1>
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
+              Powered by{" "}
+              <LinkPreview
+                url="https://motion.dev/"
+                className="font-bold glitch"
+              >
+                <GlitchText text="Motion" />
+              </LinkPreview>{" "}
+              for smooth animations.
+            </h1>
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
+              Built and ran using{" "}
+              <LinkPreview url="https://bun.sh/" className="font-bold glitch">
+                <GlitchText text="Bun" />
+              </LinkPreview>{" "}
+              for its speed and simplicity.
             </h1>
           </div>
         </div>
@@ -104,8 +132,8 @@ export default function About() {
       content: (
         <div className="flex flex-col h-full bg-slate-800 rounded-xl p-6">
           <h1 className="text-fluid-md">About My Location</h1>
-          <div className="flex flex-col h-full w-full items-center justify-center gap-2">
-            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400 mx-auto">
+          <div className="flex flex-col h-full w-full items-center justify-center text-center gap-2">
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               I am currently studying in Taiwan at National Taipei University
               (NTPU).
             </h1>
@@ -118,7 +146,7 @@ export default function About() {
               />
               <span className="text-3xl">🛫🇫🇷</span>
             </div>
-            <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400 mx-auto">
+            <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               {timeRemaining}
             </p>
           </div>

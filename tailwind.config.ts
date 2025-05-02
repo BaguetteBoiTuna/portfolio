@@ -91,25 +91,29 @@ const config = {
           to: { height: "0" },
         },
         "alive-background": {
-          "0%": {
-            transform: "scale(1) translate(0, 0)",
+          "0%, 100%": {
+            transform: "scale(1) translate(0,0) rotate(0deg)",
             backgroundPosition: "50% 50%",
-            opacity: "0.8",
+            opacity: "0.7",
+            filter: "blur(16px) brightness(0.9)",
           },
-          "33%": {
-            transform: "scale(1.03) translate(2px, -3px)",
+          "30%": {
+            transform: "scale(1.06) translate(3px,-3px) rotate(0.6deg)",
+            backgroundPosition: "62% 38%",
+            opacity: "0.95",
+            filter: "blur(16px) brightness(1.2)",
+          },
+          "60%": {
+            transform: "scale(0.94) translate(-3px,3px) rotate(-0.6deg)",
+            backgroundPosition: "38% 62%",
+            opacity: "0.8",
+            filter: "blur(16px) brightness(1)",
+          },
+          "85%": {
+            transform: "scale(1.02) translate(1px,-1px) rotate(0.3deg)",
             backgroundPosition: "55% 45%",
-            opacity: "0.9",
-          },
-          "66%": {
-            transform: "scale(0.98) translate(-3px, 2px)",
-            backgroundPosition: "45% 55%",
             opacity: "0.85",
-          },
-          "100%": {
-            transform: "scale(1) translate(0, 0)",
-            backgroundPosition: "50% 50%",
-            opacity: "0.8",
+            filter: "blur(16px) brightness(1.1)",
           },
         },
         "alive-foreground": {
@@ -122,7 +126,8 @@ const config = {
         "pulse-blur": "pulse-blur 10s ease-in-out infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "alive-background": "alive-background 15s ease-in-out infinite",
+        "alive-background":
+          "alive-background 15s cubic-bezier(0.4,0,0.2,1) infinite",
         "alive-foreground": "alive-foreground 8s ease-in-out infinite",
       },
     },
