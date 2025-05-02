@@ -112,7 +112,6 @@ function DesktopWidget({
           />
         </a>
       </div>
-
       <div className="relative z-50">
         <h3 className="text-lg font-bold">I’m listening to:</h3>
         <p className="text-sm">
@@ -156,27 +155,43 @@ function MobileTicker({
   const img = album.images[0].url;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full h-12 bg-black overflow-hidden flex items-center z-50 sm:hidden">
-      <div className="flex w-[200vw] animate-marquee">
-        {[0, 1].map((i) => (
-          <div key={i} className="w-screen flex items-center px-4">
-            <Image
-              src={img}
-              alt=""
-              width={32}
-              height={32}
-              className="rounded-md"
-            />
-            <a
-              href={`https://open.spotify.com/track/${id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-sm hover:underline ml-2"
-            >
-              <ColorTextFromImage text={txt} imageUrl={img} />
-            </a>
-          </div>
-        ))}
+    <div className="fixed bottom-0 left-0 w-full z-50 sm:hidden">
+      <div className="absolute inset-x-0 -top-5 h-5 pointer-events-none overflow-hidden">
+        <div
+          className="w-full h-full blur-3xl opacity-80 animate-breathe"
+          style={{
+            backgroundImage: `url(${img})`,
+            backgroundSize: "150% 150%",
+            backgroundPosition: "center",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%)",
+          }}
+        />
+      </div>
+      <div className="relative w-full h-12 bg-black flex items-center overflow-hidden">
+        <div className="flex w-[200vw] animate-marquee">
+          {[0, 1].map((i) => (
+            <div key={i} className="w-screen flex items-center px-4">
+              <Image
+                src={img}
+                alt=""
+                width={32}
+                height={32}
+                className="rounded-md"
+              />
+              <a
+                href={`https://open.spotify.com/track/${id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-sm hover:underline ml-2"
+              >
+                <ColorTextFromImage text={txt} imageUrl={img} />
+              </a>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

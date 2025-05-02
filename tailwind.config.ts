@@ -125,6 +125,10 @@ const config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-100vw)" },
         },
+        breathe: {
+          "0%,100%": { transform: "scale(1)", opacity: ".7" },
+          "50%": { transform: "scale(1.3)", opacity: "1" },
+        },
       },
       animation: {
         "pulse-blur": "pulse-blur 10s ease-in-out infinite",
@@ -134,6 +138,7 @@ const config = {
           "alive-background 15s cubic-bezier(0.4,0,0.2,1) infinite",
         "alive-foreground": "alive-foreground 8s ease-in-out infinite",
         marquee: "marquee 15s linear infinite",
+        breathe: "breathe 10s ease-in-out infinite",
       },
     },
   },
