@@ -25,7 +25,10 @@ export default function Home() {
           >
             <h1 className="text-fluid-lg font-bold whitespace-nowrap">
               Hey there! I&apos;m
-              <FlipWords words={names} />
+              <FlipWords
+                words={names}
+                className="inline-block w-[14ch] overflow-visible"
+              />
             </h1>
           </MotionDiv>
         </div>
