@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import ColorTextFromImage from "./color-text-from-image";
 import MotionDiv from "./motion-div";
 import { bounce } from "@/components/animations/animation-utils";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 type SpotifyTrack = {
   item?: {
@@ -16,56 +18,14 @@ type SpotifyTrack = {
 };
 
 export default function SpotifyWidget() {
-  const [track, setTrack] = useState<SpotifyTrack | null>(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [retryCount, setRetryCount] = useState(0);
-
-  useEffect(() => {
-    if (!isVisible) return;
-    const ctl = new AbortController();
-    let tid: NodeJS.Timeout;
-
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`/api/spotify?cache=${Date.now()}`, {
-          signal: ctl.signal,
-        });
-        const data: SpotifyTrack = await res.json();
-        setTrack((prev) =>
-          JSON.stringify(prev?.item) !== JSON.stringify(data?.item)
-            ? data
-            : prev,
-        );
-        setRetryCount(0);
-      } catch {
-        if (!ctl.signal.aborted) {
-          tid = setTimeout(
-            () => setRetryCount((c) => Math.min(c + 1, 5)),
-            Math.min(1000 * 2 ** retryCount, 30000),
-          );
-        }
-      }
-    };
-
-    document.addEventListener("visibilitychange", () =>
-      setIsVisible(document.visibilityState === "visible"),
-    );
-    fetchData();
-    const iv = setInterval(
-      fetchData,
-      retryCount > 0 ? 5000 : isVisible ? 1000 : 30000,
-    );
-
-    return () => {
-      ctl.abort();
-      clearInterval(iv);
-      clearTimeout(tid);
-      document.removeEventListener("visibilitychange", () => {});
-    };
-  }, [isVisible, retryCount]);
+  const { data: track } = useSWR("/api/spotify", fetcher, {
+    refreshInterval: 1000,
+    dedupingInterval: 1000,
+    revalidateOnFocus: false,
+    refreshWhenHidden: false,
+  });
 
   if (!track?.item) return null;
-
   return (
     <>
       <DesktopWidget {...track.item} />
@@ -73,7 +33,6 @@ export default function SpotifyWidget() {
     </>
   );
 }
-
 function DesktopWidget({
   id,
   name,
