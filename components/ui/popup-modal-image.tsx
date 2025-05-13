@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { Skeleton } from "@heroui/react";
 
 interface PopupModalImageProps {
   src: string;
@@ -22,6 +23,8 @@ export default function PopupModalImage({
 }: PopupModalImageProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [portalNode, setPortalNode] = useState<HTMLElement | null>(null);
+  const [thumbLoaded, setThumbLoaded] = useState(false);
+  const [modalLoaded, setModalLoaded] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -58,12 +61,18 @@ export default function PopupModalImage({
         onClick={handleOpen}
         layoutId={`modal-image-${src}`}
       >
+        {!thumbLoaded && (
+          <Skeleton className="absolute inset-0 w-full h-full" />
+        )}
         <Image
           src={src}
           alt={alt}
           width={width}
           height={height}
-          className={`${className} transition-transform group-hover:scale-105`}
+          onLoad={() => setThumbLoaded(true)}
+          className={`${className} transition-transform group-hover:scale-105 ${
+            thumbLoaded ? "opacity-100" : "opacity-0"
+          }`}
         />
         <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none"></div>
       </motion.div>
@@ -88,7 +97,17 @@ export default function PopupModalImage({
                 exit={{ scale: 0.75 }}
                 transition={{ duration: 0.2 }}
               >
-                <Image src={src} alt={alt} width={width} height={height} />
+                {!modalLoaded && (
+                  <Skeleton className="absolute inset-0 w-full h-full animate-pulse" />
+                )}
+                <Image
+                  src={src}
+                  alt={alt}
+                  width={width}
+                  height={height}
+                  onLoad={() => setModalLoaded(true)}
+                  className={`${modalLoaded ? "opacity-100" : "opacity-0"}`}
+                />
               </motion.div>
             </motion.div>
           )}
