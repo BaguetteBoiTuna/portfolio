@@ -6,33 +6,55 @@ import { AnimatePresence, motion } from "framer-motion";
 import ColorTextFromImage from "./color-text-from-image";
 import MotionDiv from "./motion-div";
 import { bounce } from "@/components/animations/animation-utils";
+import { useState, useEffect } from "react";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 // eslint-disable-next-line
-const MotionImage = motion(Image as any); // enable motion(<Image>)
+const MotionImage = motion(Image as any);
 
 type SpotifyTrack = {
+  progress_ms?: number;
   item?: {
     id: string;
     name: string;
     artists: { name: string; id: string }[];
     album: { images: { url: string }[] };
+    duration_ms: number;
   };
 };
 
 export default function SpotifyWidget() {
   const { data } = useSWR<SpotifyTrack>("/api/spotify", fetcher, {
-    refreshInterval: 1_000,
-    dedupingInterval: 1_000,
+    refreshInterval: (d) => {
+      if (!d?.item) return 15_000;
+      const left = d.item.duration_ms - (d.progress_ms ?? 0);
+      return Math.min(left + 500, 5_000);
+    },
+    keepPreviousData: true,
     revalidateOnFocus: false,
     refreshWhenHidden: false,
   });
 
-  if (!data?.item) return null;
+  type Track = NonNullable<SpotifyTrack["item"]>;
+  const [track, setTrack] = useState<Track | null>(null);
+
+  useEffect(() => {
+    if (!data?.item) return;
+    if (track?.id === data.item.id) return;
+
+    const newItem = data.item as Track;
+
+    const img = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.src = newItem.album.images[0].url;
+    img.onload = () => setTrack(newItem);
+  }, [data, track]);
+
+  if (!track) return null;
   return (
     <>
-      <DesktopWidget {...data.item} />
-      <MobileTicker {...data.item} />
+      <DesktopWidget {...track} />
+      <MobileTicker {...track} />
     </>
   );
 }
@@ -65,7 +87,7 @@ function DesktopWidget({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
           />
         </AnimatePresence>
         <a
@@ -86,7 +108,7 @@ function DesktopWidget({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
             />
           </AnimatePresence>
         </a>
@@ -100,7 +122,7 @@ function DesktopWidget({
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
           >
             <span className="font-bold">
               <a
@@ -161,7 +183,7 @@ function MobileTicker({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
           />
         </AnimatePresence>
       </div>
@@ -181,7 +203,7 @@ function MobileTicker({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
                 />
               </AnimatePresence>
               <a
@@ -196,7 +218,7 @@ function MobileTicker({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    transition={{ duration: 0.35, ease: "easeInOut" }}
                   >
                     <ColorTextFromImage text={txt} imageUrl={img} />
                   </motion.span>
