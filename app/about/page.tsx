@@ -65,7 +65,8 @@ export default function About() {
               Currently studying computer science at Epitech.
             </p>
             <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
-              I love gaming, coding, configuring the tools I use and music.
+              I love gaming, coding, traveling, configuring the tools I use and
+              music.
             </p>
           </div>
         </div>
