@@ -51,8 +51,8 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
     isAnimating || !isHovered
       ? "translateZ(0px)"
       : isFlipped
-        ? "translateZ(-100px)"
-        : "translateZ(100px)";
+        ? "translateZ(-110px)"
+        : "translateZ(110px)";
 
   return (
     <div
@@ -83,7 +83,7 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
           ref={outerRef}
           style={{
             transformStyle: "preserve-3d",
-            transition: "transform 0.2s ease",
+            transition: "transform 450ms cubic-bezier(0.175,0.885,0.32,1.275)",
             transform: hoverTranslate,
             width: "100%",
             height: "100%",
