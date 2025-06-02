@@ -29,14 +29,6 @@ export const metadata: Metadata = {
     description: "I use nvim btw",
     url: "https://tunasub.xyz",
     siteName: "TunaSub",
-    images: [
-      {
-        url: "https://tunasub.xyz/api/og",
-        width: 1200,
-        height: 630,
-        alt: "TunaSub Preview",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
