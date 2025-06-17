@@ -39,7 +39,7 @@ export default function About() {
   const timeRemaining = useMemo(() => {
     const now = Math.floor(Date.now() / 1000);
     const diff = departure - now;
-    if (diff <= 0) return "You're already back in France!";
+    if (diff <= 0) return "I'm already back in France!";
     const days = Math.ceil(diff / 86400);
     if (days < 30) {
       return `${days} days remaining`;
