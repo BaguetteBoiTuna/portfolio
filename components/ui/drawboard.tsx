@@ -31,7 +31,7 @@ const inlineAssetStore: TLAssetStore = {
 
 export default function Drawboard() {
   const store = useSync({
-    uri: `${process.env.NEXT_PUBLIC_SYNC_ENDPOINT}/public-board`,
+    uri: `${process.env.NEXT_PUBLIC_SYNC_SERVER}/public-board`,
     assets: inlineAssetStore,
     shapeUtils: useMemo(() => [...defaultShapeUtils], []),
     bindingUtils: useMemo(() => [...defaultBindingUtils], []),
