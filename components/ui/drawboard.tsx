@@ -2,10 +2,9 @@
 
 import dynamic from "next/dynamic";
 import "tldraw/tldraw.css";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSync } from "@tldraw/sync";
 import { TLAssetStore, defaultShapeUtils, defaultBindingUtils } from "tldraw";
-import { useEffect } from "react";
 
 const Tldraw = dynamic(() => import("tldraw").then((m) => m.Tldraw), {
   ssr: false,
@@ -30,23 +29,25 @@ const inlineAssetStore: TLAssetStore = {
 };
 
 export default function Drawboard() {
+  const shapeUtils = useMemo(() => defaultShapeUtils, []);
+  const bindingUtils = useMemo(() => defaultBindingUtils, []);
+
   const store = useSync({
-    uri: `${process.env.NEXT_PUBLIC_SYNC_SERVER}/public-board`,
+    uri: `${process.env.NEXT_PUBLIC_SYNC_ENDPOINT}/api/connect/public-board`,
     assets: inlineAssetStore,
-    shapeUtils: useMemo(() => [...defaultShapeUtils], []),
-    bindingUtils: useMemo(() => [...defaultBindingUtils], []),
+    shapeUtils,
+    bindingUtils,
   });
 
   useEffect(() => {
-    if (store.status !== "synced-remote") return;
+    if (store.status !== "synced-remote" || !store.store) return;
 
     console.log("🧠 store connected with status:", store.connectionStatus);
-
-    const unsubscribe = store.store.listen(() => {
+    const unsub = store.store.listen(() => {
       console.log("💡 store updated, connection:", store.connectionStatus);
     });
-
-    return unsubscribe;
+    return unsub;
   }, [store]);
+
   return <Tldraw store={store} />;
 }
