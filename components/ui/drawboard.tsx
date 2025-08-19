@@ -33,7 +33,7 @@ export default function Drawboard() {
   const bindingUtils = useMemo(() => defaultBindingUtils, []);
 
   const store = useSync({
-    uri: `${process.env.NEXT_PUBLIC_SYNC_ENDPOINT}/api/connect/public-board`,
+    uri: `${process.env.NEXT_PUBLIC_SYNC_SERVER}/api/connect/public-board`,
     assets: inlineAssetStore,
     shapeUtils,
     bindingUtils,
