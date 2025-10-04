@@ -58,7 +58,7 @@ export default function About() {
           <h1 className="text-fluid-md">About Me</h1>
           <div className="flex flex-col h-full w-full items-center justify-center text-center">
             <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
-              Hey, I&apos;m Dante, a {age} year old fluent in both English and
+              Hey, I&apos;m Dante, a {age}-year-old fluent in both English and
               French.
             </p>
             <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
@@ -68,6 +68,16 @@ export default function About() {
               I love gaming, coding, traveling, configuring the tools I use and
               music.
             </p>
+            <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
+              You should check out my{" "}
+              <LinkPreview
+                url="https://github.com/BaguetteBoiTuna/dotfiles"
+                className="font-bold glitch"
+              >
+                <GlitchText text="dotfiles" />
+              </LinkPreview>
+              !
+            </h1>
           </div>
         </div>
       ),
