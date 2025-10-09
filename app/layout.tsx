@@ -32,7 +32,11 @@ export const metadata: Metadata = {
     title: "Dante",
     description: "Software developer.",
     images: [
-      "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
+      {
+        url: "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
+        width: 1200,
+        height: 630,
+      },
     ],
   },
   twitter: {

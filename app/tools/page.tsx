@@ -7,21 +7,6 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Tools",
   description: "Explore the editors, terminals, apps, CLI tools, browsers, and websites that power my daily workflow.",
-  openGraph: {
-    title: "Tools | Dante",
-    description: "Explore the editors, terminals, apps, CLI tools, browsers, and websites that power my daily workflow.",
-    images: [
-      "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest%2Ftools&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Tools | Dante",
-    description: "Explore the editors, terminals, apps, CLI tools, browsers, and websites that power my daily workflow.",
-    images: [
-      "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest%2Ftools&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
-    ],
-  },
 };
 
 export default function Tools() {
