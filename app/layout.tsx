@@ -22,19 +22,37 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "TunaSub",
-  description: "I use nvim btw",
+  metadataBase: new URL("https://dante.quest"),
+  title: {
+    default: "Dante - Developer & Creator",
+    template: "%s | Dante",
+  },
+  description: "Software developer.",
   openGraph: {
-    title: "TunaSub",
-    description: "I use nvim btw",
-    url: "https://tunasub.xyz",
-    siteName: "TunaSub",
+    type: "website",
+    locale: "en_US",
+    url: "https://dante.quest",
+    siteName: "Dante",
+    title: "Dante - Developer & Creator",
+    description: "Software developer.",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Dante",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "TunaSub",
-    description: "I use nvim btw",
-    images: ["https://tunasub.xyz/api/og"],
+    title: "Dante - Developer & Creator",
+    description: "Software developer.",
+    images: ["/opengraph-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

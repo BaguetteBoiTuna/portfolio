@@ -2,6 +2,16 @@ import { FlipWords } from "@/components/ui/flip-words";
 import MotionDiv from "@/components/ui/motion-div";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { bounce } from "@/components/animations/animation-utils";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tools",
+  description: "Explore the editors, terminals, apps, CLI tools, browsers, and websites that power my daily workflow.",
+  openGraph: {
+    title: "Tools | Dante",
+    description: "Explore the editors, terminals, apps, CLI tools, browsers, and websites that power my daily workflow.",
+  },
+};
 
 export default function Tools() {
   const tools = [

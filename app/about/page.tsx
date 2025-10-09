@@ -5,6 +5,16 @@ import { Tabs } from "@/components/ui/tabs";
 import GlitchText from "@/components/ui/glitch-text";
 import { Progress } from "@heroui/react";
 import { useMemo } from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Learn more about Dante.",
+  openGraph: {
+    title: "About | Dante",
+    description: "Learn more about Dante.",
+  },
+};
 
 export default function About() {
   if (!process.env.BIRTH_DATE)
