@@ -38,21 +38,11 @@ export const metadata: Metadata = {
     siteName: "Dante",
     title: "Dante",
     description: "Software developer.",
-    images: [
-      {
-        url: "/screenshot.png",
-        width: 1200,
-        height: 630,
-        alt: "Dante's Portfolio",
-        type: "image/png",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Dante",
     description: "Software developer.",
-    images: ["/screenshot.png"],
     creator: "@BaguetteBoiTuna",
   },
   robots: {
