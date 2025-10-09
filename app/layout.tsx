@@ -23,44 +23,26 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dante.quest"),
-  title: {
-    default: "Dante",
-    template: "%s | Dante",
-  },
+  title: { default: "Dante", template: "%s | Dante" },
   description: "Software developer.",
-  keywords: ["portfolio", "developer", "software", "dante"],
-  authors: [{ name: "Dante" }],
-  creator: "Dante",
   openGraph: {
     type: "website",
-    locale: "en_US",
     url: "https://dante.quest",
     siteName: "Dante",
     title: "Dante",
     description: "Software developer.",
+    images: [
+      "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Dante",
     description: "Software developer.",
-    creator: "@BaguetteBoiTuna",
+    images: [
+      "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
+    ],
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

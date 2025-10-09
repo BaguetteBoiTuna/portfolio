@@ -8,13 +8,17 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Canvas | Dante",
     description: "A collaborative drawing board where you can create and share art in real-time.",
-    images: ["/screenshot.png"],
+    images: [
+      "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest%2Fcanvas&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Canvas | Dante",
     description: "A collaborative drawing board where you can create and share art in real-time.",
-    images: ["/screenshot.png"],
+    images: [
+      "https://api.microlink.io/?url=https%3A%2F%2Fdante.quest%2Fcanvas&meta=false&screenshot=true&embed=screenshot.url&viewport.width=1200&viewport.height=630",
+    ],
   },
 };
 
