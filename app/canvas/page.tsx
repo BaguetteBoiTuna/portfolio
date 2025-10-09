@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Canvas | Dante",
     description: "A collaborative drawing board where you can create and share art in real-time.",
+    images: ["/screenshot.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Canvas | Dante",
+    description: "A collaborative drawing board where you can create and share art in real-time.",
+    images: ["/screenshot.png"],
   },
 };
 

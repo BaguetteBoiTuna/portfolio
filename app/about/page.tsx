@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About | Dante",
     description: "Learn more about Dante.",
+    images: ["/screenshot.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About | Dante",
+    description: "Learn more about Dante.",
+    images: ["/screenshot.png"],
   },
 };
 
