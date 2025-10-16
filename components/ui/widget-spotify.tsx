@@ -22,12 +22,20 @@ type SpotifyTrack = {
     album: { images: { url: string }[] };
     duration_ms: number;
   };
+  error?: string;
+  retry?: string;
 };
 
 export default function SpotifyWidget() {
-  const { data, error } = useSWR<SpotifyTrack>("/api/spotify", fetcher, {
+  const { data } = useSWR<SpotifyTrack>("/api/spotify", fetcher, {
     refreshInterval: (d) => {
+      // Handle rate limiting with exponential backoff
+      if (d?.error === "rate_limited") {
+        return (Number(d.retry) || 5) * 1000 + 250;
+      }
+      // If no track playing, poll less frequently
       if (!d?.item) return 15_000;
+      // Adaptive polling: refresh just after track should end
       const left = d.item.duration_ms - (d.progress_ms ?? 0);
       return Math.min(left + 1000, 5_000);
     },
@@ -45,6 +53,13 @@ export default function SpotifyWidget() {
   const [track, setTrack] = useState<Track | null>(null);
 
   useEffect(() => {
+    // Handle "no track playing" by clearing the widget
+    if (data?.error === "no track playing") {
+      setTrack(null);
+      return;
+    }
+
+    // Only update if we have a new track
     if (!data?.item) return;
     if (track?.id === data.item.id) return;
 
@@ -60,10 +75,17 @@ export default function SpotifyWidget() {
     };
   }, [data, track]);
 
-  if (error || !track) return null;
+  // On transient errors, keep showing the last track (graceful degradation)
+  // Only hide if we explicitly know nothing is playing
+  if (!track) return null;
+
   return (
     <>
-      <DesktopWidget track={track} progress={data?.progress_ms} duration={data?.item?.duration_ms} />
+      <DesktopWidget
+        track={track}
+        progress={data?.progress_ms}
+        duration={data?.item?.duration_ms}
+      />
       <MobileTicker {...track} />
     </>
   );
@@ -82,8 +104,11 @@ const DesktopWidget = memo(function DesktopWidget({
   const { id, name, artists, album } = track;
   const cover = album.images[0].url;
 
-  // Smooth progress animation at 60fps
-  const progress = useSmoothProgress(serverProgress, duration, [id, serverProgress, duration]);
+  const progress = useSmoothProgress(serverProgress, duration, [
+    id,
+    serverProgress,
+    duration,
+  ]);
   const progressPct = duration ? Math.min(100, (progress / duration) * 100) : 0;
 
   return (
@@ -169,7 +194,6 @@ const DesktopWidget = memo(function DesktopWidget({
             ))}
           </motion.p>
         </AnimatePresence>
-        {/* Smooth progress bar with GPU-accelerated transform */}
         {duration && (
           <div className="mt-2 h-1 w-44 bg-white/20 rounded overflow-hidden">
             <div
