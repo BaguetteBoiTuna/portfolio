@@ -6,7 +6,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import ColorTextFromImage from "./color-text-from-image";
 import MotionDiv from "./motion-div";
 import { bounce } from "@/components/animations/animation-utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
+import { useSmoothProgress } from "./useSmoothProgress";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 // eslint-disable-next-line
@@ -24,15 +25,20 @@ type SpotifyTrack = {
 };
 
 export default function SpotifyWidget() {
-  const { data } = useSWR<SpotifyTrack>("/api/spotify", fetcher, {
+  const { data, error } = useSWR<SpotifyTrack>("/api/spotify", fetcher, {
     refreshInterval: (d) => {
       if (!d?.item) return 15_000;
       const left = d.item.duration_ms - (d.progress_ms ?? 0);
-      return Math.min(left + 500, 5_000);
+      return Math.min(left + 1000, 5_000);
     },
+    dedupingInterval: 4000,
     keepPreviousData: true,
+    revalidateIfStale: false,
     revalidateOnFocus: false,
     refreshWhenHidden: false,
+    onError: (err) => {
+      console.error("Spotify widget error:", err);
+    },
   });
 
   type Track = NonNullable<SpotifyTrack["item"]>;
@@ -48,24 +54,37 @@ export default function SpotifyWidget() {
     img.crossOrigin = "anonymous";
     img.src = newItem.album.images[0].url;
     img.onload = () => setTrack(newItem);
+    img.onerror = () => {
+      console.error("Failed to load album image, setting track anyway");
+      setTrack(newItem);
+    };
   }, [data, track]);
 
-  if (!track) return null;
+  if (error || !track) return null;
   return (
     <>
-      <DesktopWidget {...track} />
+      <DesktopWidget track={track} progress={data?.progress_ms} duration={data?.item?.duration_ms} />
       <MobileTicker {...track} />
     </>
   );
 }
 
-function DesktopWidget({
-  id,
-  name,
-  artists,
-  album,
-}: NonNullable<SpotifyTrack["item"]>) {
+// Memoize DesktopWidget to prevent unnecessary re-renders
+const DesktopWidget = memo(function DesktopWidget({
+  track,
+  progress: serverProgress,
+  duration,
+}: {
+  track: NonNullable<SpotifyTrack["item"]>;
+  progress?: number;
+  duration?: number;
+}) {
+  const { id, name, artists, album } = track;
   const cover = album.images[0].url;
+
+  // Smooth progress animation at 60fps
+  const progress = useSmoothProgress(serverProgress, duration, [id, serverProgress, duration]);
+  const progressPct = duration ? Math.min(100, (progress / duration) * 100) : 0;
 
   return (
     <MotionDiv
@@ -150,10 +169,22 @@ function DesktopWidget({
             ))}
           </motion.p>
         </AnimatePresence>
+        {/* Smooth progress bar with GPU-accelerated transform */}
+        {duration && (
+          <div className="mt-2 h-1 w-44 bg-white/20 rounded overflow-hidden">
+            <div
+              className="h-1 bg-white/90 rounded will-change-transform"
+              style={{
+                transform: `translateZ(0) scaleX(${progressPct / 100})`,
+                transformOrigin: "left",
+              }}
+            />
+          </div>
+        )}
       </div>
     </MotionDiv>
   );
-}
+});
 
 function MobileTicker({
   id,
