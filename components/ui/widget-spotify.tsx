@@ -13,34 +13,43 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json());
 // eslint-disable-next-line
 const MotionImage = motion(Image as any);
 
-type SpotifyTrack = {
-  progress_ms?: number;
-  item?: {
-    id: string;
-    name: string;
-    artists: { name: string; id: string }[];
-    album: { images: { url: string }[] };
-    duration_ms: number;
-  };
-  error?: string;
-  retry?: string;
-};
+type SpotifyPayload =
+  | {
+      isPlaying: true;
+      progressMs: number;
+      durationMs: number;
+      track: {
+        id: string;
+        name: string;
+        artists: { name: string; id: string }[];
+        album: { images: { url: string }[] };
+        externalUrl: string;
+      };
+    }
+  | {
+      isPlaying: false;
+    }
+  | {
+      error: string;
+      retry?: string;
+    };
 
 export default function SpotifyWidget() {
-  const { data } = useSWR<SpotifyTrack>("/api/spotify", fetcher, {
-    refreshInterval: (d) => {
-      // Handle rate limiting with exponential backoff
-      if (d?.error === "rate_limited") {
-        return (Number(d.retry) || 5) * 1000 + 250;
+  const { data } = useSWR<SpotifyPayload>("/api/spotify", fetcher, {
+    refreshInterval: (payload) => {
+      if (!payload) return 5_000;
+      if ("error" in payload) {
+        if (payload.error === "rate_limited") {
+          return (Number(payload.retry) || 5) * 1000 + 250;
+        }
+        return 10_000;
       }
-      // If no track playing, poll less frequently
-      if (!d?.item) return 15_000;
-      // Adaptive polling: refresh just after track should end
-      const left = d.item.duration_ms - (d.progress_ms ?? 0);
-      return Math.min(left + 1000, 5_000);
+      if (!payload.isPlaying) return 15_000;
+      const left = payload.durationMs - payload.progressMs;
+      return Math.min(Math.max(left, 2_500), 5_000);
     },
-    dedupingInterval: 4000,
-    keepPreviousData: true,
+    dedupingInterval: 2_000,
+    keepPreviousData: false,
     revalidateIfStale: false,
     revalidateOnFocus: false,
     refreshWhenHidden: false,
@@ -49,42 +58,53 @@ export default function SpotifyWidget() {
     },
   });
 
-  type Track = NonNullable<SpotifyTrack["item"]>;
-  const [track, setTrack] = useState<Track | null>(null);
+  type ActiveTrack = Extract<SpotifyPayload, { isPlaying: true }>["track"];
+  const [track, setTrack] = useState<ActiveTrack | null>(null);
 
   useEffect(() => {
-    // Handle "no track playing" by clearing the widget
-    if (data?.error === "no track playing") {
+    if (!data) return;
+
+    if ("error" in data) {
+      console.error("Spotify endpoint returned error:", data.error);
+      return;
+    }
+
+    if (!data.isPlaying) {
       setTrack(null);
       return;
     }
 
-    // Only update if we have a new track
-    if (!data?.item) return;
-    if (track?.id === data.item.id) return;
-
-    const newItem = data.item as Track;
+    const nextTrack = data.track;
+    const cover = nextTrack.album?.images?.[0]?.url;
+    if (!cover) {
+      setTrack(null);
+      return;
+    }
+    if (track?.id === nextTrack.id) return;
 
     const img = new window.Image();
     img.crossOrigin = "anonymous";
-    img.src = newItem.album.images[0].url;
-    img.onload = () => setTrack(newItem);
+    img.src = cover;
+    img.onload = () => setTrack(nextTrack);
     img.onerror = () => {
       console.error("Failed to load album image, setting track anyway");
-      setTrack(newItem);
+      setTrack(nextTrack);
     };
   }, [data, track]);
 
-  // On transient errors, keep showing the last track (graceful degradation)
-  // Only hide if we explicitly know nothing is playing
   if (!track) return null;
+
+  const progressMs =
+    data && "isPlaying" in data && data.isPlaying ? data.progressMs : undefined;
+  const durationMs =
+    data && "isPlaying" in data && data.isPlaying ? data.durationMs : undefined;
 
   return (
     <>
       <DesktopWidget
         track={track}
-        progress={data?.progress_ms}
-        duration={data?.item?.duration_ms}
+        progress={progressMs}
+        duration={durationMs}
       />
       <MobileTicker {...track} />
     </>
@@ -97,13 +117,16 @@ const DesktopWidget = memo(function DesktopWidget({
   progress: serverProgress,
   duration,
 }: {
-  track: NonNullable<SpotifyTrack["item"]>;
+  track: Extract<SpotifyPayload, { isPlaying: true }>["track"];
   progress?: number;
   duration?: number;
 }) {
-  const { id, name, artists, album } = track;
-  const cover = album.images[0].url;
+  const { id, name, artists, album, externalUrl } = track;
+  const cover = album.images?.[0]?.url;
 
+  if (!cover) return null;
+
+  //eslint-disable-next-line
   const progress = useSmoothProgress(serverProgress, duration, [
     id,
     serverProgress,
@@ -135,7 +158,7 @@ const DesktopWidget = memo(function DesktopWidget({
           />
         </AnimatePresence>
         <a
-          href={`https://open.spotify.com/track/${id}`}
+          href={externalUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="relative transform transition duration-300 hover:scale-110 hover:brightness-75"
@@ -170,7 +193,7 @@ const DesktopWidget = memo(function DesktopWidget({
           >
             <span className="font-bold">
               <a
-                href={`https://open.spotify.com/track/${id}`}
+                href={externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
@@ -215,8 +238,10 @@ function MobileTicker({
   name,
   artists,
   album,
-}: NonNullable<SpotifyTrack["item"]>) {
-  const img = album.images[0].url;
+  externalUrl,
+}: Extract<SpotifyPayload, { isPlaying: true }>["track"]) {
+  const img = album.images?.[0]?.url;
+  if (!img) return null;
   const txt = `${name} – ${artists.map((a) => a.name).join(", ")}`;
 
   return (
@@ -262,7 +287,7 @@ function MobileTicker({
                 />
               </AnimatePresence>
               <a
-                href={`https://open.spotify.com/track/${id}`}
+                href={externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-bold text-sm hover:underline ml-2"
