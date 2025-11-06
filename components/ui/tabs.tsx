@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -78,7 +78,6 @@ export const Tabs = ({
       <FadeInDiv
         tabs={tabs}
         active={active}
-        key={active.value}
         hovering={hovering}
         className={cn("mt-16", contentClassName)}
       />
@@ -89,6 +88,7 @@ export const Tabs = ({
 export const FadeInDiv = ({
   className,
   tabs,
+  active,
   hovering,
 }: {
   className?: string;
@@ -97,6 +97,26 @@ export const FadeInDiv = ({
   active: Tab;
   hovering?: boolean;
 }) => {
+  const [layoutKey, setLayoutKey] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const prevActiveRef = useRef(active.value);
+  
+  // Only trigger animation on actual tab change, not on hover
+  useEffect(() => {
+    if (prevActiveRef.current !== active.value) {
+      setIsAnimating(true);
+      prevActiveRef.current = active.value;
+      
+      // Complete animation after layout duration
+      const timer = setTimeout(() => {
+        setLayoutKey(prev => prev + 1);
+        setTimeout(() => setIsAnimating(false), 100);
+      }, 600);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [active.value]);
+  
   const isActive = (tab: Tab) => {
     return tab.value === tabs[0].value;
   };
@@ -111,13 +131,16 @@ export const FadeInDiv = ({
             top: hovering ? idx * -50 : 0,
             zIndex: -idx,
             opacity: idx < 3 ? 1 - idx * 0.1 : 0,
-          }}
+            "--dot-opacity": isAnimating ? 0 : 1,
+          } as React.CSSProperties}
           animate={{
             y: isActive(tab) ? [0, 40, 0] : 0,
           }}
           className={cn("w-full h-full absolute top-0 left-0", className)}
         >
-          {tab.content}
+          <div key={`${tab.value}-${layoutKey}`} style={{ width: "100%", height: "100%" }}>
+            {tab.content}
+          </div>
         </motion.div>
       ))}
     </div>
