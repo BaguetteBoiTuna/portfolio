@@ -2,6 +2,13 @@
 
 import Image from "next/image";
 import React, { useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useMotionTemplate,
+} from "motion/react";
 
 type Props = {
   frontSrc: string;
@@ -10,49 +17,74 @@ type Props = {
 };
 
 export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
-  const outerRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isAnimating) return;
-    if (!innerRef.current) return;
-    const { left, top, width, height } =
-      innerRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25;
-    const y = (e.clientY - top - height / 2) / 25;
-    innerRef.current.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
-  };
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  const handleMouseEnter = () => {
-    if (isAnimating) return;
-    setIsHovered(true);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateDepth = 17.5;
+  const translateDepth = 20;
+
+  const tiltRotateX = useTransform(
+    mouseYSpring,
+    [-0.5, 0.5],
+    [-rotateDepth, rotateDepth],
+  );
+  const tiltRotateY = useTransform(
+    mouseXSpring,
+    [-0.5, 0.5],
+    [rotateDepth, -rotateDepth],
+  );
+
+  const translateX = useTransform(
+    mouseXSpring,
+    [-0.5, 0.5],
+    [`-${translateDepth}px`, `${translateDepth}px`],
+  );
+  const translateY = useTransform(
+    mouseYSpring,
+    [-0.5, 0.5],
+    [`${translateDepth}px`, `-${translateDepth}px`],
+  );
+
+  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], [0, 100]);
+  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], [0, 100]);
+
+  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.9) 10%, rgba(255, 255, 255, 0.75) 20%, rgba(255, 255, 255, 0) 80%)`;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isAnimating || !ref.current) return;
+
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
   };
 
   const handleMouseLeave = () => {
     if (isAnimating) return;
-    setIsHovered(false);
-    if (innerRef.current)
-      innerRef.current.style.transform = "rotateX(0deg) rotateY(0deg)";
+    x.set(0);
+    y.set(0);
   };
 
   const handleClick = () => {
     if (isAnimating) return;
     setIsAnimating(true);
     setIsFlipped((prev) => !prev);
-    // Disable hover effect during flip (0.6s)
-    setTimeout(() => setIsAnimating(false), 600);
+    setTimeout(() => setIsAnimating(false), 900);
   };
-
-  // **Invert hover translateZ when flipped**
-  const hoverTranslate =
-    isAnimating || !isHovered
-      ? "translateZ(0px)"
-      : isFlipped
-        ? "translateZ(-110px)"
-        : "translateZ(110px)";
 
   return (
     <div
@@ -64,81 +96,94 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
         overflow: "visible",
         cursor: "pointer",
       }}
-      onClick={handleClick}
     >
-      {/* Flip container rotates around its center */}
-      <div
+      <motion.div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
         style={{
+          rotateX: tiltRotateX,
+          rotateY: tiltRotateY,
+          translateX,
+          translateY,
           transformStyle: "preserve-3d",
-          transition: "transform 0.6s",
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-          transformOrigin: "center",
           width: "100%",
           height: "100%",
           position: "relative",
+          boxShadow:
+            "rgba(0, 0, 0, 0.01) 0px 520px 146px 0px, rgba(0, 0, 0, 0.04) 0px 333px 133px 0px, rgba(0, 0, 0, 0.26) 0px 83px 83px 0px, rgba(0, 0, 0, 0.29) 0px 21px 46px 0px",
+          WebkitTapHighlightColor: "transparent",
         }}
+        initial={{ scale: 1, z: 0 }}
+        whileHover={{
+          scale: 1.05,
+          z: 50,
+          transition: { duration: 0.2 },
+        }}
+        whileTap={{ scale: 0.98 }}
+        className="relative rounded-2xl select-none"
       >
-        {/* Outer container for hover effect */}
-        <div
-          ref={outerRef}
+        <motion.div
           style={{
             transformStyle: "preserve-3d",
-            transition: "transform 450ms cubic-bezier(0.175,0.885,0.32,1.275)",
-            transform: hoverTranslate,
             width: "100%",
             height: "100%",
             position: "relative",
           }}
+          animate={{
+            rotateY: isFlipped ? 180 : 0,
+          }}
+          transition={{
+            rotateY: { duration: 0.9 },
+          }}
         >
-          {/* Inner container for tilt effect */}
+          {/* Front side */}
           <div
-            ref={innerRef}
-            onMouseEnter={handleMouseEnter}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
             style={{
-              transformStyle: "preserve-3d",
+              position: "absolute",
               width: "100%",
               height: "100%",
-              position: "relative",
+              backfaceVisibility: "hidden",
+              transformStyle: "preserve-3d",
             }}
           >
-            {/* Front side */}
-            <div
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                backfaceVisibility: "hidden",
-              }}
-            >
-              <Image
-                src={frontSrc}
-                alt={alt}
-                fill
-                className="object-cover border-3 border-white"
-              />
-            </div>
-            {/* Back side */}
-            <div
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                backfaceVisibility: "hidden",
-                transform: "rotateY(180deg)",
-              }}
-            >
-              <Image
-                src={backSrc}
-                alt={alt}
-                fill
-                className="object-cover border-3 border-white"
-              />
-            </div>
+            <Image
+              src={frontSrc}
+              alt={alt}
+              fill
+              className="object-cover border-3 border-white rounded-2xl pointer-events-none"
+            />
           </div>
-        </div>
-      </div>
+          {/* Back side */}
+          <div
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              backfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+              transformStyle: "preserve-3d",
+            }}
+          >
+            <Image
+              src={backSrc}
+              alt={alt}
+              fill
+              className="object-cover border-3 border-white rounded-2xl pointer-events-none"
+            />
+          </div>
+        </motion.div>
+        {/* Glare effect */}
+        <motion.div
+          className="pointer-events-none absolute inset-0 z-50 h-full w-full rounded-2xl mix-blend-overlay"
+          style={{
+            background: glareBackground,
+            opacity: isAnimating ? 0 : 0.6,
+          }}
+          transition={{ duration: 0.2 }}
+        />
+      </motion.div>
     </div>
   );
 };
