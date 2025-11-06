@@ -6,6 +6,7 @@ import GlitchText from "@/components/ui/glitch-text";
 import { Progress } from "@heroui/react";
 import { useMemo } from "react";
 import type { Metadata } from "next";
+import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 
 export const metadata: Metadata = {
   title: "About",
@@ -60,9 +61,9 @@ export default function About() {
       title: "Me",
       value: "about-me",
       content: (
-        <div className="flex flex-col h-full bg-slate-800 rounded-xl p-6">
-          <h1 className="text-fluid-md">About Me</h1>
-          <div className="flex flex-col h-full w-full items-center justify-center text-center">
+        <div className="relative flex flex-col h-full rounded-xl p-6 overflow-hidden border border-neutral-200/20 bg-white shadow ring-1 shadow-black/10 ring-black/5 dark:border-neutral-800/50 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5">
+          <h1 className="relative z-10 text-fluid-md">About Me</h1>
+          <div className="relative z-10 flex flex-col h-full w-full items-center justify-center text-center">
             <p className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               Hey, I&apos;m Dante, a {age}-year-old fluent in both English and
               French.
@@ -85,6 +86,19 @@ export default function About() {
               !
             </h1>
           </div>
+          <DottedGlowBackground
+            opacity={0.5}
+            gap={10}
+            radius={1.6}
+            color="rgba(115, 115, 115, 0.7)"
+            darkColor="rgba(115, 115, 115, 0.7)"
+            glowColor="rgba(82, 82, 91, 0.85)"
+            darkGlowColor="rgba(7, 89, 133, 0.85)"
+            backgroundOpacity={0}
+            speedMin={0.3}
+            speedMax={1.6}
+            speedScale={1}
+          />
         </div>
       ),
     },
@@ -92,9 +106,9 @@ export default function About() {
       title: "Site",
       value: "about-site",
       content: (
-        <div className="flex flex-col h-full bg-slate-800 rounded-xl p-6">
-          <h1 className="text-fluid-md">About The Site</h1>
-          <div className="flex flex-col h-full w-full items-center justify-center text-center">
+        <div className="relative flex flex-col h-full rounded-xl p-6 overflow-hidden border border-neutral-200/20 bg-white shadow ring-1 shadow-black/10 ring-black/5 dark:border-neutral-800/50 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5">
+          <h1 className="relative z-10 text-fluid-md">About The Site</h1>
+          <div className="relative z-10 flex flex-col h-full w-full items-center justify-center text-center">
             <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               I made this website for fun.
             </h1>
@@ -140,6 +154,19 @@ export default function About() {
               for its speed and simplicity.
             </h1>
           </div>
+          <DottedGlowBackground
+            opacity={0.5}
+            gap={10}
+            radius={1.6}
+            color="rgba(115, 115, 115, 0.7)"
+            darkColor="rgba(115, 115, 115, 0.7)"
+            glowColor="rgba(82, 82, 91, 0.85)"
+            darkGlowColor="rgba(7, 89, 133, 0.85)"
+            backgroundOpacity={0}
+            speedMin={0.3}
+            speedMax={1.6}
+            speedScale={1}
+          />
         </div>
       ),
     },
@@ -147,9 +174,9 @@ export default function About() {
       title: "Location",
       value: "about-location",
       content: (
-        <div className="flex flex-col h-full bg-slate-800 rounded-xl p-6">
-          <h1 className="text-fluid-md">About My Location</h1>
-          <div className="flex flex-col h-full w-full items-center justify-center text-center gap-2">
+        <div className="relative flex flex-col h-full rounded-xl p-6 overflow-hidden border border-neutral-200/20 bg-white shadow ring-1 shadow-black/10 ring-black/5 dark:border-neutral-800/50 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5">
+          <h1 className="relative z-10 text-fluid-md">About My Location</h1>
+          <div className="relative z-10 flex flex-col h-full w-full items-center justify-center text-center gap-2">
             <h1 className="text-fluid-smd text-neutral-500 dark:text-neutral-400">
               I am currently studying in Taiwan at National Taipei University
               (NTPU).
@@ -167,6 +194,19 @@ export default function About() {
               {timeRemaining}
             </p>
           </div>
+          <DottedGlowBackground
+            opacity={0.5}
+            gap={10}
+            radius={1.6}
+            color="rgba(115, 115, 115, 0.7)"
+            darkColor="rgba(115, 115, 115, 0.7)"
+            glowColor="rgba(82, 82, 91, 0.85)"
+            darkGlowColor="rgba(7, 89, 133, 0.85)"
+            backgroundOpacity={0}
+            speedMin={0.3}
+            speedMax={1.6}
+            speedScale={1}
+          />
         </div>
       ),
     },
