@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full gap-5 sm:gap-10 sm:flex-row md:space-x-0 space-x-3.5 items-center justify-evenly">
-      <div className="flex flex-col">
+      <div className="flex flex-col relative z-0">
         <div className="overflow-hidden">
           <MotionDiv
             className="inline-block"
@@ -76,7 +76,7 @@ export default function Home() {
         </MotionDiv>
       </div>
       <MotionDiv
-        className="relative flex sm:order-last order-first w-fluid-lg h-fluid-lg"
+        className="relative flex sm:order-last order-first w-fluid-lg h-fluid-lg z-20"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={bounce}
