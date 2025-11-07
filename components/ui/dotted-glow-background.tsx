@@ -59,8 +59,7 @@ export const DottedGlowBackground = ({
   speedMin = 0.4,
   speedMax = 1.3,
   speedScale = 1,
-  skipResizeMs = 0,
-}: DottedGlowBackgroundProps & { skipResizeMs?: number }) => {
+}: DottedGlowBackgroundProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [resolvedColor, setResolvedColor] = useState<string>(color);
@@ -171,15 +170,7 @@ export const DottedGlowBackground = ({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    let lastResizeTime = 0;
-    const ro = new ResizeObserver(() => {
-      const now = Date.now();
-      if (skipResizeMs > 0 && now - lastResizeTime < skipResizeMs) {
-        return; // Skip resize if called too soon
-      }
-      lastResizeTime = now;
-      resize();
-    });
+    const ro = new ResizeObserver(resize);
     ro.observe(container);
     resize();
 
@@ -305,12 +296,7 @@ export const DottedGlowBackground = ({
     <div
       ref={containerRef}
       className={className}
-      style={{ 
-        position: "absolute", 
-        inset: 0,
-        opacity: "var(--dot-opacity, 1)",
-        transition: "opacity 0.15s ease-out"
-      }}
+      style={{ position: "absolute", inset: 0 }}
     >
       <canvas
         ref={canvasRef}

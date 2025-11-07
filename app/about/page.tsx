@@ -6,7 +6,6 @@ import GlitchText from "@/components/ui/glitch-text";
 import { Progress } from "@heroui/react";
 import { useMemo } from "react";
 import type { Metadata } from "next";
-import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 
 export const metadata: Metadata = {
   title: "About",
@@ -86,19 +85,6 @@ export default function About() {
               !
             </h1>
           </div>
-          <DottedGlowBackground
-            opacity={0.5}
-            gap={10}
-            radius={1.6}
-            color="rgba(115, 115, 115, 0.7)"
-            darkColor="rgba(115, 115, 115, 0.7)"
-            glowColor="rgba(82, 82, 91, 0.85)"
-            darkGlowColor="rgba(7, 89, 133, 0.85)"
-            backgroundOpacity={0}
-            speedMin={0.3}
-            speedMax={1.6}
-            speedScale={1}
-          />
         </div>
       ),
     },
@@ -154,19 +140,6 @@ export default function About() {
               for its speed and simplicity.
             </h1>
           </div>
-          <DottedGlowBackground
-            opacity={0.5}
-            gap={10}
-            radius={1.6}
-            color="rgba(115, 115, 115, 0.7)"
-            darkColor="rgba(115, 115, 115, 0.7)"
-            glowColor="rgba(82, 82, 91, 0.85)"
-            darkGlowColor="rgba(7, 89, 133, 0.85)"
-            backgroundOpacity={0}
-            speedMin={0.3}
-            speedMax={1.6}
-            speedScale={1}
-          />
         </div>
       ),
     },
@@ -194,19 +167,6 @@ export default function About() {
               {timeRemaining}
             </p>
           </div>
-          <DottedGlowBackground
-            opacity={0.5}
-            gap={10}
-            radius={1.6}
-            color="rgba(115, 115, 115, 0.7)"
-            darkColor="rgba(115, 115, 115, 0.7)"
-            glowColor="rgba(82, 82, 91, 0.85)"
-            darkGlowColor="rgba(7, 89, 133, 0.85)"
-            backgroundOpacity={0}
-            speedMin={0.3}
-            speedMax={1.6}
-            speedScale={1}
-          />
         </div>
       ),
     },
