@@ -8,6 +8,7 @@ import MotionDiv from "./motion-div";
 import { bounce } from "@/components/animations/animation-utils";
 import { useState, useEffect, memo } from "react";
 import { useSmoothProgress } from "./useSmoothProgress";
+import { useExtractColors } from "react-extract-colors";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 // eslint-disable-next-line
@@ -241,24 +242,26 @@ function MobileTicker({
   externalUrl,
 }: Extract<SpotifyPayload, { isPlaying: true }>["track"]) {
   const img = album.images?.[0]?.url;
+  const { dominantColor } = useExtractColors(img || "");
   if (!img) return null;
   const txt = `${name} – ${artists.map((a) => a.name).join(", ")}`;
+  const glowColor = dominantColor || "#ffffff";
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-50 sm:hidden">
-      <div className="absolute inset-x-0 -top-5 h-5 pointer-events-none overflow-hidden">
+      <div className="absolute inset-x-0 -top-12 h-12 pointer-events-none">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={img}
-            className="w-full h-full blur-3xl opacity-80 animate-breathe"
+            className="w-full h-full"
             style={{
-              backgroundImage: `url(${img})`,
-              backgroundSize: "150% 150%",
-              backgroundPosition: "center",
-              maskImage:
-                "linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%)",
-              WebkitMaskImage:
-                "linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%)",
+              background: `linear-gradient(to top, ${glowColor} 0%, transparent 100%)`,
+              boxShadow: `
+                0 2px 4px ${glowColor}ff,
+                0 4px 8px ${glowColor}dd,
+                0 8px 16px ${glowColor}aa,
+                0 12px 24px ${glowColor}66
+              `,
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
