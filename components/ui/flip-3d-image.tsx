@@ -126,10 +126,15 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
     if (isAnimating) return;
     setIsAnimating(true);
     setIsFlipped((prev) => !prev);
+    
+    // Check if this is a touch device
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
     setTimeout(() => {
       setIsAnimating(false);
-      // Reset position if mouse is not actually hovering
-      if (!ref.current?.matches(':hover')) {
+      // On touch devices, always reset position
+      // On mouse devices, only reset if not hovering
+      if (isTouchDevice || !ref.current?.matches(":hover")) {
         setIsHovering(false);
         x.set(0);
         y.set(0);
@@ -137,26 +142,8 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
     }, 800);
   };
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (isAnimating || !ref.current) return;
-    
-    const rect = ref.current.getBoundingClientRect();
-    const touch = e.touches[0];
-    const width = rect.width;
-    const height = rect.height;
-    const touchX = touch.clientX - rect.left;
-    const touchY = touch.clientY - rect.top;
-
-    const xPct = touchX / width - 0.5;
-    const yPct = touchY / height - 0.5;
-
-    setIsHovering(true);
-    x.set(xPct);
-    y.set(yPct);
-  };
-
   const handleTouchEnd = () => {
-    if (isAnimating) return;
+    // Force reset on touch end to prevent stuck position on mobile
     setIsHovering(false);
     x.set(0);
     y.set(0);
@@ -178,7 +165,6 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
-        onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         style={{
           rotateX: tiltRotateX,
