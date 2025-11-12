@@ -4,7 +4,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Canvas",
-  description: "A collaborative drawing board where you can create and share art in real-time.",
+  description:
+    "A collaborative drawing board where you can create and share art in real-time.",
 };
 
 export default function Canvas() {
