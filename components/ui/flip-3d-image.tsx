@@ -126,13 +126,21 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
     if (isAnimating) return;
     setIsAnimating(true);
     setIsFlipped((prev) => !prev);
-    setTimeout(() => setIsAnimating(false), 900);
+    setTimeout(() => {
+      setIsAnimating(false);
+      // Reset position if mouse is not actually hovering
+      if (!ref.current?.matches(':hover')) {
+        setIsHovering(false);
+        x.set(0);
+        y.set(0);
+      }
+    }, 800);
   };
 
   return (
     <div
       style={{
-        perspective: "1000px",
+        perspective: "1500px",
         width: "100%",
         height: "100%",
         position: "relative",
@@ -178,7 +186,11 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
             rotateY: isFlipped ? 180 : 0,
           }}
           transition={{
-            rotateY: { duration: 0.9 },
+            duration: 0.8,
+            ease: [0.34, 1.56, 0.64, 1],
+            type: "spring",
+            stiffness: 100,
+            damping: 15,
           }}
         >
           {/* Front side */}
@@ -218,14 +230,19 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
           </div>
         </motion.div>
         {/* Glare effect */}
-        <motion.div
-          className="pointer-events-none absolute inset-0 z-50 h-full w-full rounded-2xl mix-blend-overlay"
-          style={{
-            background: glareBackground,
-            opacity: isAnimating ? 0 : 0.6,
-          }}
-          transition={{ duration: 0.2 }}
-        />
+        {!isAnimating && (
+          <motion.div
+            className="pointer-events-none absolute inset-0 z-50 h-full w-full rounded-2xl mix-blend-overlay"
+            style={{
+              background: glareBackground,
+              opacity: 0.6,
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          />
+        )}
       </motion.div>
     </div>
   );
