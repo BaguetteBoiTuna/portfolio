@@ -54,7 +54,11 @@ export default function WarnDialog() {
     <Dialog
       defaultOpen
       onOpenChange={(open) => {
-        if (open) setStep(1);
+        if (open) {
+          setStep(1);
+        } else {
+          window.location.href = "/";
+        }
       }}
     >
       {/* <DialogTrigger asChild> */}

@@ -20,12 +20,52 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
+
+  React.useEffect(() => {
+    if (isHovering) return;
+
+    let animationFrameId: number;
+    let startTime: number | null = null;
+    const radius = 0.5;
+    const duration = 3000;
+    const pauseDuration = 8000;
+
+    const animate = (timestamp: number) => {
+      if (isHovering) return;
+
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const totalCycle = duration + pauseDuration;
+      const cycleProgress = elapsed % totalCycle;
+
+      if (cycleProgress < pauseDuration) {
+        x.set(0);
+        y.set(0);
+      } else {
+        const animationProgress = (cycleProgress - pauseDuration) / duration;
+        const angle = animationProgress * Math.PI * 2;
+        x.set(Math.cos(angle) * radius);
+        y.set(Math.sin(angle) * radius);
+      }
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [isHovering, x, y]);
 
   const rotateDepth = 17.5;
   const translateDepth = 20;
@@ -60,6 +100,8 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isAnimating || !ref.current) return;
 
+    setIsHovering(true);
+
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -75,6 +117,7 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
 
   const handleMouseLeave = () => {
     if (isAnimating) return;
+    setIsHovering(false);
     x.set(0);
     y.set(0);
   };
