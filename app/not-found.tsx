@@ -1,34 +1,31 @@
-import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import Big404 from "@/components/ui/big-404";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
-import MotionDiv from "@/components/ui/motion-div";
 import Link from "next/link";
+import GlitchText from "@/components/ui/glitch-text";
+import MotionDiv from "@/components/ui/motion-div";
+import { bounce } from "@/components/animations/animation-utils";
 
 export default function NotFound() {
-  const words = [
-    { text: "404", className: "text-blue-500" },
-    { text: "|" },
-    { text: "Not" },
-    { text: "Found" },
-  ];
-
   return (
-    <div className="z-50 flex flex-col w-full h-full gap-5 sm:gap-0 md:space-x-0 space-x-3.5 items-center justify-center">
-      <div>
-        <h1 className="text-6xl text-center">
-          <TypewriterEffectSmooth words={words} />
-        </h1>
-      </div>
+    <div className="flex flex-col items-center justify-center w-full h-full gap-10 py-16">
       <MotionDiv
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 5, delay: 3.5 }}
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={bounce}
       >
-        <Button asChild className="mt-4">
+        <Big404 />
+      </MotionDiv>
+
+      <MotionDiv
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...bounce, delay: 0.2 }}
+      >
+        <Button asChild className="mt-4 glitch">
           <Link href="/">
-            {" "}
             <Home size={18} />
-            Go Home
+            <GlitchText text="Go Home" color="black" />
           </Link>
         </Button>
       </MotionDiv>
