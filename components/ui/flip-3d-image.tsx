@@ -21,51 +21,44 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [idleCooldown, setIdleCooldown] = useState(false);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const idleTiltX = useMotionValue(0);
+  const idleTiltY = useMotionValue(0);
 
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
   React.useEffect(() => {
-    if (isHovering) return;
+    if (isHovering || idleCooldown) return;
 
-    let animationFrameId: number;
-    let startTime: number | null = null;
-    const radius = 0.5;
-    const duration = 3000;
-    const pauseDuration = 8000;
+    let frame: number;
+    const start = performance.now();
 
-    const animate = (timestamp: number) => {
+    const loop = (t: number) => {
       if (isHovering) return;
 
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const totalCycle = duration + pauseDuration;
-      const cycleProgress = elapsed % totalCycle;
+      const elapsed = t - start;
 
-      if (cycleProgress < pauseDuration) {
-        x.set(0);
-        y.set(0);
-      } else {
-        const animationProgress = (cycleProgress - pauseDuration) / duration;
-        const angle = animationProgress * Math.PI * 2;
-        x.set(Math.cos(angle) * radius);
-        y.set(Math.sin(angle) * radius);
-      }
+      const float = Math.sin(elapsed / 1200) * 0.35;
+      const drift = Math.sin(elapsed / 1700) * 0.25;
 
-      animationFrameId = requestAnimationFrame(animate);
+      const tiltX = Math.sin(elapsed / 1400) * 18;
+      const tiltY = Math.sin(elapsed / 1800) * 24;
+
+      x.set(drift);
+      y.set(float);
+      idleTiltX.set(tiltX);
+      idleTiltY.set(tiltY);
+
+      frame = requestAnimationFrame(loop);
     };
 
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [isHovering, x, y]);
+    frame = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(frame);
+  }, [isHovering, idleCooldown, x, y, idleTiltX, idleTiltY]);
 
   const rotateDepth = 17.5;
   const translateDepth = 20;
@@ -120,20 +113,21 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
     setIsHovering(false);
     x.set(0);
     y.set(0);
+
+    setIdleCooldown(true);
+    setTimeout(() => setIdleCooldown(false), 1000);
   };
 
   const handleClick = () => {
     if (isAnimating) return;
     setIsAnimating(true);
     setIsFlipped((prev) => !prev);
-    
-    // Check if this is a touch device
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
+
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
     setTimeout(() => {
       setIsAnimating(false);
-      // On touch devices, always reset position
-      // On mouse devices, only reset if not hovering
       if (isTouchDevice || !ref.current?.matches(":hover")) {
         setIsHovering(false);
         x.set(0);
@@ -143,7 +137,6 @@ export const FlipHover3DImage = ({ frontSrc, backSrc, alt }: Props) => {
   };
 
   const handleTouchEnd = () => {
-    // Force reset on touch end to prevent stuck position on mobile
     setIsHovering(false);
     x.set(0);
     y.set(0);
