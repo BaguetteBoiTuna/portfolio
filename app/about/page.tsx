@@ -139,6 +139,9 @@ export default function About() {
               </LinkPreview>{" "}
               for its speed and simplicity.
             </h1>
+            <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-4 opacity-60">
+              I wonder what happens when we trigger a 404 🤔
+            </p>
           </div>
         </div>
       ),
