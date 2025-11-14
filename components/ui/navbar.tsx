@@ -51,6 +51,11 @@ export default function MinimalNavBar() {
             <GlitchText text="Canvas" />
           </RouterLink>
         </NavbarItem>
+        <NavbarItem>
+          <RouterLink href="/yoinkdlp" className="glitch">
+            <GlitchText text="Yoinkdlp" />
+          </RouterLink>
+        </NavbarItem>
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
@@ -73,6 +78,9 @@ export default function MinimalNavBar() {
         </NavbarMenuItem>
         <NavbarMenuItem>
           <RouterLink href="/canvas">Canvas</RouterLink>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+          <RouterLink href="/yoinkdlp">Yoinkdlp</RouterLink>
         </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
