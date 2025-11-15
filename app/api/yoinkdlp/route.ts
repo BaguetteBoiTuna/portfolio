@@ -6,6 +6,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    console.log("YOINK URL:", process.env.YOINK_DLP_WORKER_URL);
+    console.log("BODY:", body);
+
     const upstream = await fetch(process.env.YOINK_DLP_WORKER_URL!, {
       method: "POST",
       headers: {

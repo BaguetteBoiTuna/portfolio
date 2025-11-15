@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import { YoinkdlpWipDialog } from "./wip-dialog";
 
 interface Format {
   quality: string;
@@ -67,6 +68,7 @@ export default function YoinkDLPPage() {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center pt-32 pb-20 px-4">
+      <YoinkdlpWipDialog />
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -76,7 +78,8 @@ export default function YoinkDLPPage() {
         <div className="text-center">
           <h1 className="text-4xl font-bold">YoinkDLP</h1>
           <p className="text-sm text-neutral-400 mt-2">
-            A playful YouTube downloader powered by Piped.
+            Cobalt.tools does not support youtube downloading. So, here is a
+            replacement.
           </p>
         </div>
 
@@ -130,26 +133,30 @@ export default function YoinkDLPPage() {
                 </thead>
 
                 <tbody>
-                  {data.formats.map((f) => (
-                    <tr
-                      key={f.url}
-                      className="border-t border-neutral-700 hover:bg-neutral-800/40"
-                    >
-                      <td className="px-3 py-2">{f.quality}</td>
-                      <td className="px-3 py-2">{f.ext}</td>
-                      <td className="px-3 py-2">
-                        <a
-                          href={f.url}
-                          className="underline text-blue-400 hover:text-blue-300"
-                          target="_blank"
-                          rel="noreferrer"
-                          download
-                        >
-                          Download
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
+                  {data.formats.map((f) => {
+                    const proxyUrl = `/api/yoinkdlp/download?url=${encodeURIComponent(f.url)}`;
+
+                    return (
+                      <tr
+                        key={f.url}
+                        className="border-t border-neutral-700 hover:bg-neutral-800/40"
+                      >
+                        <td className="px-3 py-2">{f.quality}</td>
+                        <td className="px-3 py-2">{f.ext}</td>
+                        <td className="px-3 py-2">
+                          <a
+                            href={proxyUrl}
+                            className="underline text-blue-400 hover:text-blue-300"
+                            target="_blank"
+                            rel="noreferrer"
+                            download
+                          >
+                            Download
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
