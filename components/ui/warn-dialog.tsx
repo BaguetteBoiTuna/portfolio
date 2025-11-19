@@ -56,15 +56,18 @@ export default function WarnDialog() {
       onOpenChange={(open) => {
         if (open) {
           setStep(1);
-        } else {
-          window.location.href = "/";
         }
       }}
     >
       {/* <DialogTrigger asChild> */}
       {/*   <Button variant="outline">Warn</Button> */}
       {/* </DialogTrigger> */}
-      <DialogContent className="gap-0 p-0 [&>button:last-child]:text-white">
+      <DialogContent
+        onPointerDownOutside={(e) => {
+          e.preventDefault();
+        }}
+        className="gap-0 p-0 [&>button:last-child]:text-white"
+      >
         <div className="p-2">
           <img
             className="w-full rounded-md bg-white"
