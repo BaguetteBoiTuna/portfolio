@@ -75,6 +75,7 @@ export async function GET(req: NextRequest) {
       status: upstream.status,
       headers,
     });
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.log("FETCH ERROR:", err?.message || err);
     return new NextResponse("Proxy error", { status: 500 });
