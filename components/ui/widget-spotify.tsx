@@ -112,7 +112,6 @@ export default function SpotifyWidget() {
   );
 }
 
-// Memoize DesktopWidget to prevent unnecessary re-renders
 const DesktopWidget = memo(function DesktopWidget({
   track,
   progress: serverProgress,
@@ -128,11 +127,7 @@ const DesktopWidget = memo(function DesktopWidget({
   if (!cover) return null;
 
   //eslint-disable-next-line
-  const progress = useSmoothProgress(serverProgress, duration, [
-    id,
-    serverProgress,
-    duration,
-  ]);
+  const progress = useSmoothProgress(serverProgress, duration, true, id);
   const progressPct = duration ? Math.min(100, (progress / duration) * 100) : 0;
 
   return (
@@ -219,16 +214,35 @@ const DesktopWidget = memo(function DesktopWidget({
           </motion.p>
         </AnimatePresence>
         {duration && (
-          <div className="mt-2 h-1 w-44 bg-white/20 rounded overflow-hidden">
-            <div
-              className="h-1 bg-white/90 rounded will-change-transform"
-              style={{
-                transform: `translateZ(0) scaleX(${progressPct / 100})`,
-                transformOrigin: "left",
-              }}
-            />
+          <div className="mt-3 w-full max-w-[200px]">
+            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-visible relative">
+              <motion.div
+                className="absolute top-0 left-0 h-full bg-white rounded-full"
+                style={{
+                  width: `${progressPct}%`,
+                  boxShadow: "0 0 10px 2px rgba(255, 255, 255, 0.3)",
+                }}
+                initial={false}
+                transition={{ type: "tween", ease: "linear", duration: 0.1 }}
+              >
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+              </motion.div>
+            </div>
+            <div className="flex justify-between text-[10px] text-white/70 mt-1 font-medium tabular-nums">
+              <span>
+                {Math.floor((progress || 0) / 60000)}:
+                {String(Math.floor(((progress || 0) % 60000) / 1000)).padStart(
+                  2,
+                  "0",
+                )}
+              </span>
+              <span>
+                {Math.floor(duration / 60000)}:
+                {String(Math.floor((duration % 60000) / 1000)).padStart(2, "0")}
+              </span>
+            </div>
           </div>
-        )}
+        )}{" "}
       </div>
     </MotionDiv>
   );
@@ -244,56 +258,97 @@ function MobileTicker({
   const img = album.images?.[0]?.url;
   const { dominantColor } = useExtractColors(img || "");
   if (!img) return null;
+
   const txt = `${name} – ${artists.map((a) => a.name).join(", ")}`;
-  const glowColor = dominantColor || "#ffffff";
+  const glowColor = dominantColor || "#7c3aed"; // Fallback violet
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-50 sm:hidden">
-      <div className="absolute inset-x-0 -top-12 h-12 pointer-events-none">
-        <AnimatePresence mode="wait" initial={false}>
+      <div className="absolute bottom-0 w-full h-[50vh] pointer-events-none z-0 overflow-hidden">
+        <AnimatePresence mode="wait">
           <motion.div
-            key={img}
-            className="w-full h-full"
-            style={{
-              background: `linear-gradient(to top, ${glowColor} 0%, transparent 100%)`,
-              boxShadow: `
-                0 2px 4px ${glowColor}ff,
-                0 4px 8px ${glowColor}dd,
-                0 8px 16px ${glowColor}aa,
-                0 12px 24px ${glowColor}66
-              `,
-            }}
+            key={dominantColor}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-          />
+            transition={{ duration: 1.5 }}
+            className="w-full h-full relative"
+          >
+            <motion.div
+              className="absolute bottom-0 -left-[10%] w-[40%] h-full blur-[40px]"
+              style={{
+                background: `linear-gradient(to top, ${glowColor} 0%, transparent 100%)`,
+              }}
+              animate={{
+                opacity: [0.4, 0.7, 0.4],
+                height: ["60%", "80%", "60%"],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+
+            <motion.div
+              className="absolute bottom-0 -right-[10%] w-[40%] h-full blur-[40px]"
+              style={{
+                background: `linear-gradient(to top, ${glowColor} 0%, transparent 100%)`,
+              }}
+              animate={{
+                opacity: [0.4, 0.7, 0.4],
+                height: ["50%", "75%", "50%"],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
+            />
+
+            <motion.div
+              className="absolute bottom-0 left-[10%] w-[80%] h-full blur-[50px]"
+              style={{
+                background: `linear-gradient(to top, ${glowColor} 0%, transparent 100%)`,
+              }}
+              animate={{
+                opacity: [0.3, 0.5, 0.3],
+                height: ["20%", "30%", "20%"],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="relative w-full h-12 bg-black flex items-center overflow-hidden">
+      <div className="relative z-10 w-full h-12 bg-black/90 backdrop-blur-md border-t border-white/10 flex items-center overflow-hidden shadow-sm">
         <div className="flex w-[200vw] animate-marquee">
           {[0, 1].map((i) => (
-            <div key={i} className="w-screen flex items-center px-4">
+            <div key={i} className="w-screen flex items-center px-4 shrink-0">
               <AnimatePresence mode="wait" initial={false}>
                 <MotionImage
                   key={`${img}-${i}`}
                   src={img}
                   alt=""
-                  width={32}
-                  height={32}
-                  className="rounded-md"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  width={28}
+                  height={28}
+                  className="rounded-sm shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.4 }}
                 />
               </AnimatePresence>
               <a
                 href={externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-sm hover:underline ml-2"
+                className="font-medium text-xs text-white/90 hover:text-white truncate ml-3 block w-full"
               >
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
@@ -301,9 +356,9 @@ function MobileTicker({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                    transition={{ duration: 0.35 }}
                   >
-                    <ColorTextFromImage text={txt} imageUrl={img} />
+                    {txt}
                   </motion.span>
                 </AnimatePresence>
               </a>
