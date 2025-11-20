@@ -1,6 +1,11 @@
 "use client";
 
-import { useMotionValue, useSpring, useTransform } from "motion/react";
+import {
+  useMotionValue,
+  useSpring,
+  useTransform,
+  MotionValue,
+} from "motion/react";
 import { useEffect, useState } from "react";
 import FlipTile from "./flip-tile";
 
@@ -36,12 +41,65 @@ const ZERO: [number, number][] = [
 
 const DIGITS = [FOUR, ZERO, FOUR];
 
+const pseudoRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
+const ScatteredTile = ({
+  mx,
+  my,
+  cx,
+  cy,
+  size,
+  seed,
+}: {
+  mx: MotionValue<number>;
+  my: MotionValue<number>;
+  cx: number;
+  cy: number;
+  size: number;
+  seed: number;
+}) => {
+  const randomVal = pseudoRandom(seed);
+  const depth = randomVal * 1.5 + 0.5;
+
+  const rotateX = useTransform(my, [-0.5, 0.5], [30 * depth, -30 * depth]);
+  const rotateY = useTransform(mx, [-0.5, 0.5], [-30 * depth, 30 * depth]);
+  const translateX = useTransform(
+    mx,
+    [-0.5, 0.5],
+    [`${-50 * depth}px`, `${50 * depth}px`],
+  );
+  const translateY = useTransform(
+    my,
+    [-0.5, 0.5],
+    [`${50 * depth}px`, `${-50 * depth}px`],
+  );
+
+  return (
+    <FlipTile
+      size={size}
+      rotateX={rotateX}
+      rotateY={rotateY}
+      translateX={translateX}
+      translateY={translateY}
+      initialColor="#fff"
+      styleOverride={{
+        left: cx * (TILE + GAP),
+        top: cy * (TILE + GAP),
+        zIndex: Math.floor(depth * 100),
+      }}
+    />
+  );
+};
+
 export default function Big404() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mx = useSpring(x, { stiffness: 60, damping: 16 });
-  const my = useSpring(y, { stiffness: 60, damping: 16 });
+  const mx = useSpring(x, { stiffness: 50, damping: 20 });
+  const my = useSpring(y, { stiffness: 50, damping: 20 });
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -52,26 +110,16 @@ export default function Big404() {
     return () => window.removeEventListener("mousemove", handler);
   }, [x, y]);
 
-  const rotateX = useTransform(my, [-0.5, 0.5], [20, -20]);
-  const rotateY = useTransform(mx, [-0.5, 0.5], [-20, 20]);
-  const translateX = useTransform(mx, [-0.5, 0.5], ["-25px", "25px"]);
-  const translateY = useTransform(my, [-0.5, 0.5], ["25px", "-25px"]);
-
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
     const update = () => {
       const viewport = window.innerWidth;
-      const maxAllowed = viewport * 0.9;
-
+      const maxAllowed = viewport * 0.8;
       const fullWidth =
         DIGIT_WIDTH * TILE * 3 + GAP * (DIGIT_WIDTH - 1) * 3 + DIGIT_GAP * 2;
-
-      const newScale = Math.min(1, maxAllowed / fullWidth);
-
-      setScale(newScale);
+      setScale(Math.min(1, maxAllowed / fullWidth));
     };
-
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -82,8 +130,8 @@ export default function Big404() {
 
   return (
     <div
-      className="w-full h-[550px] flex items-center justify-center"
-      style={{ perspective: 1500 }}
+      className="w-full h-[600px] flex items-center justify-center overflow-visible p-10"
+      style={{ perspective: 1000 }}
     >
       <div
         className="flex items-center justify-center origin-center"
@@ -98,21 +146,21 @@ export default function Big404() {
             className="relative"
             style={{ width: digitWidthPx, height: digitHeightPx }}
           >
-            {digit.map(([cx, cy], i) => (
-              <FlipTile
-                key={`${dIndex}-${i}`}
-                size={TILE}
-                rotateX={rotateX}
-                rotateY={rotateY}
-                translateX={translateX}
-                translateY={translateY}
-                initialColor="white"
-                styleOverride={{
-                  left: cx * (TILE + GAP),
-                  top: cy * (TILE + GAP),
-                }}
-              />
-            ))}
+            {digit.map(([cx, cy], i) => {
+              const seed = dIndex * 100 + i;
+
+              return (
+                <ScatteredTile
+                  key={`${dIndex}-${i}`}
+                  mx={mx}
+                  my={my}
+                  cx={cx}
+                  cy={cy}
+                  size={TILE}
+                  seed={seed}
+                />
+              );
+            })}
           </div>
         ))}
       </div>
