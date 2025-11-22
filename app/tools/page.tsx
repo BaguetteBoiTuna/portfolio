@@ -6,7 +6,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tools",
-  description: "Explore the editors, terminals, apps, CLI tools, browsers, and websites that power my daily workflow.",
+  description:
+    "Explore the editors, terminals, apps, CLI tools, browsers, and websites that power my daily workflow.",
 };
 
 export default function Tools() {
@@ -54,8 +55,8 @@ export default function Tools() {
   ];
 
   return (
-    <div className="flex h-full w-full flex-col justify-center items-center">
-      <div className="flex flex-col justify-center items-center p-10">
+    <div className="flex min-h-screen w-full flex-col items-center pt-20 md:justify-center md:pt-0">
+      <div className="flex flex-col justify-center items-center px-4 md:p-10 text-center">
         <div className="overflow-hidden">
           <MotionDiv
             className="inline-block"
@@ -63,7 +64,7 @@ export default function Tools() {
             animate={{ opacity: 1, y: 0 }}
             transition={bounce}
           >
-            <h1 className="text-fluid-lg font-bold whitespace-nowrap">
+            <h1 className="text-3xl md:text-fluid-lg font-bold md:whitespace-nowrap">
               <FlipWords words={tools} />
             </h1>
           </MotionDiv>
@@ -75,14 +76,15 @@ export default function Tools() {
             animate={{ opacity: 1, y: 0 }}
             transition={bounce}
           >
-            <h2 className="text-fluid-md">
+            <h2 className="text-lg md:text-fluid-md mt-2 text-neutral-500 dark:text-neutral-400">
               I use everyday to make my life easier.
             </h2>
           </MotionDiv>
         </div>
       </div>
+
       <MotionDiv
-        className="flex"
+        className="flex w-full max-w-7xl px-4 md:px-0"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={bounce}
